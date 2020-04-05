@@ -1,3 +1,15 @@
+sudo: false
 language: node_js
 node_js:
-  - 7
+  - 10
+install:
+  - npm install
+  - npm run-script build
+
+deploy:
+  provider: npm
+  email: "$NPM_EMAIL_ADDRESS"
+  api_key: "$NPM_AUTH_TOKEN"
+  tag: next
+  on:
+    tags: true

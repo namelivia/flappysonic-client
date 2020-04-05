@@ -1,4 +1,5 @@
 import Sonic, { SpriteSheetData, HurtSpriteSheetData} from './Sonic'
+import { STATE_DEAD, STATE_ALIVE } from '../Level/Level.js'
 import {
 	Container,
 	Sprite,
@@ -14,8 +15,6 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-//TODO: Use constants for statuses
-//
 test('sprites are initialized when initializing sonic', () => {
   //spriteSheetConstructorMock.mockImplementation(() => 'spriteSheet') TODO I havent been able to do this
   const sonic = new Sonic('spritesheet')
@@ -31,7 +30,7 @@ test('sprites are initialized when initializing sonic', () => {
 
 test('updating data while jumping up', () => {
   const sonic = initializeSonic(20, 10, 16)
-  updateSonic(sonic, 0)
+  updateSonic(sonic, STATE_ALIVE)
   assertSonicStatus(sonic, 20, 4, 14)
   expect(sonic.sprite.x).toBe(20)
   expect(sonic.sprite.y).toBe(4)
@@ -41,7 +40,7 @@ test('updating data while jumping up', () => {
 
 test('updating data while going straight', () => {
   const sonic = initializeSonic(20, 10, 2)
-  updateSonic(sonic, 0)
+  updateSonic(sonic, STATE_ALIVE)
   assertSonicStatus(sonic, 20, 18, 0)
   expect(gotoAndPlayMock).toHaveBeenCalledTimes(1)
   expect(gotoAndPlayMock).toHaveBeenCalledWith('straight')
@@ -49,7 +48,7 @@ test('updating data while going straight', () => {
 
 test('updating data while going down', () => {
   const sonic = initializeSonic(20, 10, 0)
-  updateSonic(sonic, 0)
+  updateSonic(sonic, STATE_ALIVE)
   assertSonicStatus(sonic, 20, 20, 0)
   expect(gotoAndPlayMock).toHaveBeenCalledTimes(1)
   expect(gotoAndPlayMock).toHaveBeenCalledWith('down')
@@ -58,7 +57,7 @@ test('updating data while going down', () => {
 test('updating data while dead', () => {
   const sonic = initializeSonic(20, 10, 0)
   sonic.die('spritesheet')
-  updateSonic(sonic, 1)
+  updateSonic(sonic, STATE_DEAD)
   assertSonicStatus(sonic, 26, 16, 0)
   expect(gotoAndPlayMock).toHaveBeenCalledTimes(1)
   expect(gotoAndPlayMock).toHaveBeenCalledWith('dead')

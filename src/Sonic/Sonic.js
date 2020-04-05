@@ -1,4 +1,5 @@
 import { Container, Sprite, SpriteSheet} from 'createjs'
+import { STATE_ALIVE, STATE_DEAD } from '../Level/Level.js'
 
 export const SpriteSheetData = {
 	"frames": {"regX": 0, "height": 64, "count": 12, "regY": 0, "width": 64},
@@ -55,7 +56,7 @@ export default class Sonic extends Container {
 	}
 
 	isDead(state) {
-		return state === 1 //TODO: use a constant
+		return state == STATE_DEAD
 	}
 
 	tick(event, state) {

@@ -4,6 +4,9 @@ import Sonic from '../Sonic/Sonic'
 import Enemies from '../Enemies/Enemies'
 import Score from '../Score/Score'
 
+export const STATE_ALIVE = 0
+export const STATE_DEAD = 1
+
 export default class Level {
 
 	restartOnClick = () => this.start()
@@ -18,7 +21,7 @@ export default class Level {
 	start() {
 		this.canvas.removeEventListener('click', this.restartOnClick)
 		this.stage = new Stage(this.canvas)
-		this.state = 0
+		this.state = STATE_ALIVE
 		this.scenario = new Scenario(
 			this.preloader.getResult('clouds'),
 			this.preloader.getResult('floor')
@@ -44,7 +47,7 @@ export default class Level {
 		this.enemies.tick(event, this.state)
 
 		//checks every update if 
-		if (this.state == 0){
+		if (this.state == STATE_ALIVE){
 			if (this.enemies.collision(this.player.sprite) ||
 				this.player.sprite.y < -60 || this.player.sprite.y > 280
 			) {
@@ -59,7 +62,7 @@ export default class Level {
 		}
 
 		//checks every update if 
-		if (this.state == 1){
+		if (this.state == STATE_DEAD){
 			this.ticks++
 			if (this.ticks == 100) {
 				this.message = new Text("Click to restart", "bold 24px Helvetica", "#FFFFFF")

@@ -74,7 +74,7 @@ test('updating data while dead', () => {
   sonic.jump = 0
   sonic.tick('event', 1) //TODO: Use a constant
   expect(sonic.sprite.x).toBe(26)
-  expect(sonic.sprite.y).toBe(10)
+  expect(sonic.sprite.y).toBe(16)
   expect(sonic.jump).toBe(0)
   expect(gotoAndPlayMock).toHaveBeenCalledTimes(1)
   expect(gotoAndPlayMock).toHaveBeenCalledWith('dead')

@@ -60,19 +60,6 @@ export default class Game {
         this.UpdateScoreTable(data, lastscoresTable)
 	}
 
-	UpdateLastscores(data){
-		var new_tbody = document.createElement('tbody')
-		for (i = 0; i < data.length; i++) {
-			var row = new_tbody.insertRow(0)
-			var name = row.insertCell(0)
-			var score = row.insertCell(1)
-
-			name.innerHTML = data[i].name
-			score.innerHTML = data[i].hiscore
-		}
-		lastscoresTable.replaceChild(new_tbody,lastscoresTable.tBodies[0])
-	}
-
 	startLoading() {
 		let loadingText = new LoadingText(this.stage, this.canvas)
 		this.preloader = new Preloader(

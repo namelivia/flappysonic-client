@@ -28,13 +28,15 @@ To embed this game in an html file createjs has to be loaded from its CDN first,
 <html>
     <head>
       <script src="https://code.createjs.com/1.0.0/createjs.min.js" />
-      <script src='/scripts/bundle.js'/>
+      <script src="/scripts/bundle.js"/>
     </head>
     <body>
       <canvas id="gameCanvas" width="320" height="288" />
     </body>
 </html>
 ```
+
+I recommend checking as an example [the official backend](https://github.com/namelivia/flappysonic).
 
 ## Testing
 

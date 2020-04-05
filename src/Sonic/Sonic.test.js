@@ -28,10 +28,7 @@ test('sprites are initialized when initializing sonic', () => {
 });
 
 test('updating data while jumping up', () => {
-  const sonic = new Sonic('spritesheet')
-  sonic.sprite.x = 20
-  sonic.sprite.y = 10
-  sonic.jump = 16
+  const sonic = initializeSonic(20, 10, 16)
   sonic.tick('event', 0) //TODO: Use a constant
   expect(sonic.sprite.x).toBe(20)
   expect(sonic.sprite.y).toBe(4)
@@ -41,10 +38,7 @@ test('updating data while jumping up', () => {
 })
 
 test('updating data while going straight', () => {
-  const sonic = new Sonic('spritesheet')
-  sonic.sprite.x = 20
-  sonic.sprite.y = 10
-  sonic.jump = 2
+  const sonic = initializeSonic(20, 10, 2)
   sonic.tick('event', 0) //TODO: Use a constant
   expect(sonic.sprite.x).toBe(20)
   expect(sonic.sprite.y).toBe(18)
@@ -54,10 +48,7 @@ test('updating data while going straight', () => {
 })
 
 test('updating data while going down', () => {
-  const sonic = new Sonic('spritesheet')
-  sonic.sprite.x = 20
-  sonic.sprite.y = 10
-  sonic.jump = 0
+  const sonic = initializeSonic(20, 10, 0)
   sonic.tick('event', 0) //TODO: Use a constant
   expect(sonic.sprite.x).toBe(20)
   expect(sonic.sprite.y).toBe(20)
@@ -67,11 +58,8 @@ test('updating data while going down', () => {
 })
 
 test('updating data while dead', () => {
-  const sonic = new Sonic('spritesheet')
+  const sonic = initializeSonic(20, 10, 0)
   sonic.die('spritesheet')
-  sonic.sprite.x = 20
-  sonic.sprite.y = 10
-  sonic.jump = 0
   sonic.tick('event', 1) //TODO: Use a constant
   expect(sonic.sprite.x).toBe(26)
   expect(sonic.sprite.y).toBe(16)
@@ -91,3 +79,11 @@ test('jumping resets the jump to 20', () => {
   sonic.doJump()
   expect(sonic.jump).toBe(20);
 });
+
+const initializeSonic = (x, y, jump) => {
+  const sonic = new Sonic('spritesheet')
+  sonic.sprite.x = x
+  sonic.sprite.y = y
+  sonic.jump = jump
+  return sonic
+}

@@ -30,9 +30,9 @@ test('sprites are initialized when initializing sonic', () => {
 test('updating data while jumping up', () => {
   const sonic = initializeSonic(20, 10, 16)
   sonic.tick('event', 0) //TODO: Use a constant
+  assertSonicStatus(sonic, 20, 4, 14)
   expect(sonic.sprite.x).toBe(20)
   expect(sonic.sprite.y).toBe(4)
-  expect(sonic.jump).toBe(14)
   expect(gotoAndPlayMock).toHaveBeenCalledTimes(1)
   expect(gotoAndPlayMock).toHaveBeenCalledWith('up')
 })
@@ -40,9 +40,7 @@ test('updating data while jumping up', () => {
 test('updating data while going straight', () => {
   const sonic = initializeSonic(20, 10, 2)
   sonic.tick('event', 0) //TODO: Use a constant
-  expect(sonic.sprite.x).toBe(20)
-  expect(sonic.sprite.y).toBe(18)
-  expect(sonic.jump).toBe(0)
+  assertSonicStatus(sonic, 20, 18, 0)
   expect(gotoAndPlayMock).toHaveBeenCalledTimes(1)
   expect(gotoAndPlayMock).toHaveBeenCalledWith('straight')
 })
@@ -50,9 +48,7 @@ test('updating data while going straight', () => {
 test('updating data while going down', () => {
   const sonic = initializeSonic(20, 10, 0)
   sonic.tick('event', 0) //TODO: Use a constant
-  expect(sonic.sprite.x).toBe(20)
-  expect(sonic.sprite.y).toBe(20)
-  expect(sonic.jump).toBe(0)
+  assertSonicStatus(sonic, 20, 20, 0)
   expect(gotoAndPlayMock).toHaveBeenCalledTimes(1)
   expect(gotoAndPlayMock).toHaveBeenCalledWith('down')
 })
@@ -61,9 +57,7 @@ test('updating data while dead', () => {
   const sonic = initializeSonic(20, 10, 0)
   sonic.die('spritesheet')
   sonic.tick('event', 1) //TODO: Use a constant
-  expect(sonic.sprite.x).toBe(26)
-  expect(sonic.sprite.y).toBe(16)
-  expect(sonic.jump).toBe(0)
+  assertSonicStatus(sonic, 26, 16, 0)
   expect(gotoAndPlayMock).toHaveBeenCalledTimes(1)
   expect(gotoAndPlayMock).toHaveBeenCalledWith('dead')
   expect(spriteSheetConstructorMock).toHaveBeenCalledTimes(2)
@@ -86,4 +80,10 @@ const initializeSonic = (x, y, jump) => {
   sonic.sprite.y = y
   sonic.jump = jump
   return sonic
+}
+
+const assertSonicStatus = (sonic, x, y, jump) => {
+  expect(sonic.sprite.x).toBe(x)
+  expect(sonic.sprite.y).toBe(y)
+  expect(sonic.jump).toBe(jump)
 }

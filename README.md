@@ -6,4 +6,8 @@ Play it here: [https://flappysonic.namelivia.com](https://flappysonic.namelivia.
 Building instructions:
 
 `npm install`
+
 `npm npm run-script build`
+
+Execute tests:
+`npm test`

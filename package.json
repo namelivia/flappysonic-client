@@ -25,5 +25,9 @@
   },
   "dependencies": {
     "createjs": "^1.0.1"
+  },
+  "jest": {
+      "collectCoverage": true,
+      "coverageReporters": ["lcov"]
   }
 }

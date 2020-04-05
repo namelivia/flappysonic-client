@@ -38,7 +38,8 @@ export default class Game {
 		}
 	}
 
-	UpdateHiscores(data){
+    UpdateScoreTable(data, scoreTable)
+    {
 		var new_tbody = document.createElement('tbody')
 		for (i = 0; i < data.length; i++) {
 			var row = new_tbody.insertRow(0)
@@ -48,7 +49,15 @@ export default class Game {
 			name.innerHTML = data[i].name
 			score.innerHTML = data[i].hiscore
 		}
-		hiscoresTable.replaceChild(new_tbody,hiscoresTable.tBodies[0])
+		scoreTable.replaceChild(new_tbody,scoreTable.tBodies[0])
+    }
+
+	UpdateHiscores(data){
+        this.UpdateScoreTable(data, hiscoresTable)
+	}
+
+	UpdateLastscores(data){
+        this.UpdateScoreTable(data, lastscoresTable)
 	}
 
 	UpdateLastscores(data){

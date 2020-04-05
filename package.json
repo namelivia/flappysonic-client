@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "build": "webpack --config webpack.config.js",
+    "prepublish": "npm run-script build",
     "test": "jest"
   },
   "author": "José Ignacio Amelivia Santiago <jignacio.amelivia@gmail.com>",

@@ -1,13 +1,13 @@
 import Score, { SpriteSheetData } from './Score'
 import {
-	Container,
-	Sprite,
-	SpriteSheet,
-	mockAddChild,
-	mockedContainerConstructor,
-	mockedSpriteConstructor,
-	spriteSheetConstructorMock,
-	gotoAndPlayMock
+  Container,
+  Sprite,
+  SpriteSheet,
+  mockAddChild,
+  mockedContainerConstructor,
+  mockedSpriteConstructor,
+  spriteSheetConstructorMock,
+  gotoAndPlayMock
 } from 'createjs'
  
 

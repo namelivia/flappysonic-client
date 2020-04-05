@@ -1,7 +1,7 @@
 import Instructions from './Instructions'
 import {
-	Bitmap,
-	mockedBitmapConstructor,
+  Bitmap,
+  mockedBitmapConstructor,
 } from 'createjs'
 
 test('instructions are rendered when initialized', () => {

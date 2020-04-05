@@ -20,6 +20,12 @@ module.exports = {
 					}
 				}
 			}, {
+			    test: /\.js$/,
+				exclude: /(node_modules)/,
+				use: {
+					loader: 'eslint-loader',
+				}
+			}, {
 				test: /\.(png|jpe?g|gif|svg)$/,
 				use: [
 					{

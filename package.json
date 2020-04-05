@@ -1,6 +1,6 @@
 {
   "name": "flappysonic-client",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Client part of a flappy bird like game featuring Sonic the Hedgehog",
   "main": "dist/bundle.js",
   "files": [
@@ -13,21 +13,29 @@
   "author": "José Ignacio Amelivia Santiago <jignacio.amelivia@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.7.4",
-    "@babel/plugin-proposal-class-properties": "^7.7.4",
-    "@babel/preset-env": "^7.7.4",
-    "babel-loader": "^8.0.6",
-    "file-loader": "^5.0.2",
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/preset-env": "^7.9.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "^8.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-loader": "^4.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "file-loader": "^5.1.0",
     "jest": "^24.9.0",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10",
-    "babel-jest": "^24.9.0"
+    "prettier": "^2.0.2",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
   },
   "dependencies": {
     "createjs": "^1.0.1"
   },
   "jest": {
-      "collectCoverage": true,
-      "coverageReporters": ["lcov"]
+    "collectCoverage": true,
+    "coverageReporters": [
+      "lcov"
+    ]
   }
 }

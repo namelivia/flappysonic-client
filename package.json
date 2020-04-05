@@ -3,9 +3,9 @@
   "version": "0.0.2",
   "description": "Client part of a flappy bird like game featuring Sonic the Hedgehog",
   "main": "dist/bundle.js",
-  "files": {
+  "files": [
     "dist/bundle.js"
-  },
+  ],
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "test": "jest"

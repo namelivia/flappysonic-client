@@ -15,7 +15,7 @@ export default class Collision {
         this.cachedBAFrames = []
     }
 
-    checkRectCollision(bitmap1, bitmap2) {
+    _checkRectCollision(bitmap1, bitmap2) {
         var b1, b2
         b1 = this.getBounds(bitmap1)
         b2 = this.getBounds(bitmap2)
@@ -25,8 +25,7 @@ export default class Collision {
     checkPixelCollision(bitmap1, bitmap2) {
         var imageData1, imageData2, pixelIntersection
 
-        var intersection = this.checkRectCollision(bitmap1, bitmap2)
-        if (!intersection) {
+        if (!this._checkRectCollision(bitmap1, bitmap2)) {
             return false
         }
 
@@ -235,7 +234,7 @@ export default class Collision {
         return imgr
     }
 
-    _getBoundsForNonContainer(obj) {
+    getBounds(obj) {
         var bounds = new Bounds()
         var imgr = this._defaultImgrToZero(new Imgr(obj))
 
@@ -248,9 +247,5 @@ export default class Collision {
         bounds.width = globalPositions.getMaxX() - bounds.x
         bounds.height = globalPositions.getMaxY() - bounds.y
         return bounds
-    }
-
-    getBounds(obj) {
-        return this._getBoundsForNonContainer(obj)
     }
 }

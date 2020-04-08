@@ -1,4 +1,6 @@
 import { Bitmap, Sprite, SpriteSheetUtils, Container } from 'createjs'
+import Bounds from './Bounds'
+import GlobalPositions from './GlobalPositions'
 export default class Collision {
     constructor() {
         this.collisionCanvas = document.createElement('canvas')
@@ -225,47 +227,38 @@ export default class Collision {
     }
 
     _getBoundsForChild(bounds, child) {
+        var myBounds = new Bounds(
+            bounds.x,
+            bounds.y,
+            bounds.x2,
+            bounds.y2,
+            bounds.width,
+            bounds.height
+        )
         var cbounds = this.getBounds(child)
         if (cbounds.x < bounds.x) {
-            bounds.x = cbounds.x
+            myBounds.setX(cbounds.x)
         }
         if (cbounds.y < bounds.y) {
-            bounds.y = cbounds.y
+            myBounds.setY(cbounds.y)
         }
         if (cbounds.x + cbounds.width > bounds.x2) {
-            bounds.x2 = cbounds.x + cbounds.width
+            myBounds.setX2(cbounds.x + cbounds.width)
         }
         if (cbounds.y + cbounds.height > bounds.y2) {
-            bounds.y2 = cbounds.y + cbounds.height
+            myBounds.setY2(cbounds.y + cbounds.height)
         }
-        return bounds
-    }
-
-    _replaceInfinityWithZero(bound) {
-        if (bound == Infinity) {
-            return 0
-        }
-        return bound
-    }
-
-    _replaceInfinitiesWithZeroes(bounds) {
-        bounds.x = this._replaceInfinityWithZero(bounds.x)
-        bounds.y = this._replaceInfinityWithZero(bounds.y)
-        bounds.x2 = this._replaceInfinityWithZero(bounds.x2)
-        bounds.y2 = this._replaceInfinityWithZero(bounds.y2)
-        return bounds
+        return myBounds
     }
 
     _getBoundsForContainer(bounds, obj) {
-        bounds.x2 = -Infinity
-        bounds.y2 = -Infinity
         var children = obj.children,
             childrenCount = children.length,
             index
         for (index = 0; index < childrenCount; index++) {
             bounds = this._getBoundsForChild(bounds, children[index])
         }
-            
+
         bounds = this._replaceInfinitiesWithZeroes(bounds)
 
         bounds.width = bounds.x2 - bounds.x
@@ -276,23 +269,19 @@ export default class Collision {
     }
 
     _getBoundsX(globalPositions) {
-        var { gp, gp2, gp3, gp4 } = globalPositions
-        return Math.min(Math.min(Math.min(gp.x, gp2.x), gp3.x), gp4.x)
+        return globalPositions.getMinX()
     }
 
     _getBoundsY(globalPositions) {
-        var { gp, gp2, gp3, gp4 } = globalPositions
-        return Math.min(Math.min(Math.min(gp.y, gp2.y), gp3.y), gp4.y)
+        return globalPositions.getMinY()
     }
 
     _getBoundsWidth(globalPositions, boundsX) {
-        var { gp, gp2, gp3, gp4 } = globalPositions
-        return Math.max(Math.max(Math.max(gp.x, gp2.x), gp3.x), gp4.x) - boundsX
+        return globalPositions.getMaxX() - boundsX
     }
 
     _getBoundsHeight(globalPositions, boundsY) {
-        var { gp, gp2, gp3, gp4 } = globalPositions
-        return Math.max(Math.max(Math.max(gp.y, gp2.y), gp3.y), gp4.y) - boundsY
+        return globalPositions.getMaxY() - boundsY
     }
 
     _getImgrForBitmap(obj) {
@@ -327,18 +316,6 @@ export default class Collision {
         return imgr
     }
 
-    _getGlobalPositions(obj, imgr) {
-        return {
-            gp: obj.localToGlobal(0 - imgr.regX, 0 - imgr.regY),
-            gp2: obj.localToGlobal(
-                imgr.width - imgr.regX,
-                imgr.height - imgr.regY
-            ),
-            gp3: obj.localToGlobal(imgr.width - imgr.regX, 0 - imgr.regY),
-            gp4: obj.localToGlobal(0 - imgr.regX, imgr.height - imgr.regY),
-        }
-    }
-
     _spriteFrameHasImage(obj) {
         return (
             obj.spriteSheet._frames &&
@@ -363,17 +340,16 @@ export default class Collision {
         bounds.regX = imgr.regX
         bounds.regY = imgr.regY
 
-        var globalPositions = this._getGlobalPositions(obj, imgr)
-
-        bounds.x = this._getBoundsX(globalPositions)
-        bounds.y = this._getBoundsY(globalPositions)
-        bounds.width = this._getBoundsWidth(globalPositions, bounds.x)
-        bounds.height = this._getBoundsHeight(globalPositions, bounds.y)
+        var globalPositions = new GlobalPositions(obj, imgr)
+        bounds.x = globalPositions.getMinX()
+        bounds.y = globalPositions.getMinY()
+        bounds.width = globalPositions.getMaxX() - bounds.x
+        bounds.height = globalPositions.getMaxY() - bounds.y
         return bounds
     }
 
     getBounds(obj) {
-        var bounds = { x: Infinity, y: Infinity, width: 0, height: 0 }
+        var bounds = new Bounds()
         if (obj instanceof Container) {
             return this._getBoundsForContainer(bounds, obj)
         }

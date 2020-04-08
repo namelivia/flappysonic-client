@@ -1,4 +1,7 @@
-import { Bitmap, Sprite, SpriteSheetUtils, Container } from 'createjs'
+import { Bitmap, Sprite, SpriteSheetUtils } from 'createjs'
+import Bounds from './Bounds'
+import GlobalPositions from './GlobalPositions'
+import Imgr from './Imgr'
 export default class Collision {
     constructor() {
         this.collisionCanvas = document.createElement('canvas')
@@ -12,7 +15,7 @@ export default class Collision {
         this.cachedBAFrames = []
     }
 
-    checkRectCollision(bitmap1, bitmap2) {
+    _checkRectCollision(bitmap1, bitmap2) {
         var b1, b2
         b1 = this.getBounds(bitmap1)
         b2 = this.getBounds(bitmap2)
@@ -21,8 +24,7 @@ export default class Collision {
 
     checkPixelCollision(bitmap1, bitmap2) {
         var imageData1, imageData2, pixelIntersection
-
-        var intersection = this.checkRectCollision(bitmap1, bitmap2)
+        var intersection = this._checkRectCollision(bitmap1, bitmap2)
         if (!intersection) {
             return false
         }
@@ -224,91 +226,26 @@ export default class Collision {
         }
     }
 
+    _defaultImgrToZero(imgr) {
+        imgr.regX = imgr.regX || 0
+        imgr.width = imgr.width || 0
+        imgr.regY = imgr.regY || 0
+        imgr.height = imgr.height || 0
+        return imgr
+    }
+
     getBounds(obj) {
-        var bounds = { x: Infinity, y: Infinity, width: 0, height: 0 }
-        if (obj instanceof Container) {
-            bounds.x2 = -Infinity
-            bounds.y2 = -Infinity
-            var children = obj.children,
-                l = children.length,
-                cbounds,
-                c
-            for (c = 0; c < l; c++) {
-                cbounds = this.getBounds(children[c])
-                if (cbounds.x < bounds.x) bounds.x = cbounds.x
-                if (cbounds.y < bounds.y) bounds.y = cbounds.y
-                if (cbounds.x + cbounds.width > bounds.x2)
-                    bounds.x2 = cbounds.x + cbounds.width
-                if (cbounds.y + cbounds.height > bounds.y2)
-                    bounds.y2 = cbounds.y + cbounds.height
-                //if ( cbounds.x - bounds.x + cbounds.width  > bounds.width  ) bounds.width  = cbounds.x - bounds.x + cbounds.width
-                //if ( cbounds.y - bounds.y + cbounds.height > bounds.height ) bounds.height = cbounds.y - bounds.y + cbounds.height
-            }
-            if (bounds.x == Infinity) bounds.x = 0
-            if (bounds.y == Infinity) bounds.y = 0
-            if (bounds.x2 == Infinity) bounds.x2 = 0
-            if (bounds.y2 == Infinity) bounds.y2 = 0
+        var bounds = new Bounds()
+        var imgr = this._defaultImgrToZero(new Imgr(obj))
 
-            bounds.width = bounds.x2 - bounds.x
-            bounds.height = bounds.y2 - bounds.y
-            delete bounds.x2
-            delete bounds.y2
-        } else {
-            var gp,
-                gp2,
-                gp3,
-                gp4,
-                imgr = {},
-                sr
-            if (obj instanceof Bitmap) {
-                sr = obj.sourceRect || obj.image
+        bounds.regX = imgr.regX
+        bounds.regY = imgr.regY
 
-                imgr.width = sr.width
-                imgr.height = sr.height
-            } else if (obj instanceof Sprite) {
-                if (
-                    obj.spriteSheet._frames &&
-                    obj.spriteSheet._frames[obj.currentFrame] &&
-                    obj.spriteSheet._frames[obj.currentFrame].image
-                ) {
-                    var cframe = obj.spriteSheet.getFrame(obj.currentFrame)
-                    imgr.width = cframe.rect.width
-                    imgr.height = cframe.rect.height
-                    imgr.regX = cframe.regX
-                    imgr.regY = cframe.regY
-                } else {
-                    bounds.x = obj.x || 0
-                    bounds.y = obj.y || 0
-                }
-            } else {
-                bounds.x = obj.x || 0
-                bounds.y = obj.y || 0
-            }
-
-            imgr.regX = imgr.regX || 0
-            imgr.width = imgr.width || 0
-            imgr.regY = imgr.regY || 0
-            imgr.height = imgr.height || 0
-            bounds.regX = imgr.regX
-            bounds.regY = imgr.regY
-
-            gp = obj.localToGlobal(0 - imgr.regX, 0 - imgr.regY)
-            gp2 = obj.localToGlobal(
-                imgr.width - imgr.regX,
-                imgr.height - imgr.regY
-            )
-            gp3 = obj.localToGlobal(imgr.width - imgr.regX, 0 - imgr.regY)
-            gp4 = obj.localToGlobal(0 - imgr.regX, imgr.height - imgr.regY)
-
-            bounds.x = Math.min(Math.min(Math.min(gp.x, gp2.x), gp3.x), gp4.x)
-            bounds.y = Math.min(Math.min(Math.min(gp.y, gp2.y), gp3.y), gp4.y)
-            bounds.width =
-                Math.max(Math.max(Math.max(gp.x, gp2.x), gp3.x), gp4.x) -
-                bounds.x
-            bounds.height =
-                Math.max(Math.max(Math.max(gp.y, gp2.y), gp3.y), gp4.y) -
-                bounds.y
-        }
+        var globalPositions = new GlobalPositions(obj, imgr)
+        bounds.x = globalPositions.minX
+        bounds.y = globalPositions.minY
+        bounds.width = globalPositions.maxX - bounds.x
+        bounds.height = globalPositions.maxY - bounds.y
         return bounds
     }
 }

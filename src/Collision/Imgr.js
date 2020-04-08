@@ -1,6 +1,6 @@
 import { Sprite } from 'createjs'
 export default class Imgr {
-    constructor(bounds, obj) {
+    constructor(obj) {
         if (obj instanceof Sprite && this._spriteFrameHasImage(obj)) {
             return this._getImgrForSprite(obj)
         }

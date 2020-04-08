@@ -1,4 +1,4 @@
-import { Bitmap, Sprite, SpriteSheetUtils, Container } from 'createjs'
+import { Bitmap, Sprite, SpriteSheetUtils } from 'createjs'
 import Bounds from './Bounds'
 import GlobalPositions from './GlobalPositions'
 import Imgr from './Imgr'
@@ -227,64 +227,6 @@ export default class Collision {
         }
     }
 
-    _getBoundsForChild(bounds, child) {
-        var myBounds = new Bounds(
-            bounds.x,
-            bounds.y,
-            bounds.x2,
-            bounds.y2,
-            bounds.width,
-            bounds.height
-        )
-        var cbounds = this.getBounds(child)
-        if (cbounds.x < bounds.x) {
-            myBounds.setX(cbounds.x)
-        }
-        if (cbounds.y < bounds.y) {
-            myBounds.setY(cbounds.y)
-        }
-        if (cbounds.x + cbounds.width > bounds.x2) {
-            myBounds.setX2(cbounds.x + cbounds.width)
-        }
-        if (cbounds.y + cbounds.height > bounds.y2) {
-            myBounds.setY2(cbounds.y + cbounds.height)
-        }
-        return myBounds
-    }
-
-    _getBoundsForContainer(bounds, obj) {
-        var children = obj.children,
-            childrenCount = children.length,
-            index
-        for (index = 0; index < childrenCount; index++) {
-            bounds = this._getBoundsForChild(bounds, children[index])
-        }
-
-        bounds = this._replaceInfinitiesWithZeroes(bounds)
-
-        bounds.width = bounds.x2 - bounds.x
-        bounds.height = bounds.y2 - bounds.y
-        delete bounds.x2
-        delete bounds.y2
-        return bounds
-    }
-
-    _getBoundsX(globalPositions) {
-        return globalPositions.getMinX()
-    }
-
-    _getBoundsY(globalPositions) {
-        return globalPositions.getMinY()
-    }
-
-    _getBoundsWidth(globalPositions, boundsX) {
-        return globalPositions.getMaxX() - boundsX
-    }
-
-    _getBoundsHeight(globalPositions, boundsY) {
-        return globalPositions.getMaxY() - boundsY
-    }
-
     _defaultImgrToZero(imgr) {
         imgr.regX = imgr.regX || 0
         imgr.width = imgr.width || 0
@@ -293,8 +235,9 @@ export default class Collision {
         return imgr
     }
 
-    _getBoundsForNonContainer(bounds, obj) {
-        var imgr = this._defaultImgrToZero(new Imgr(bounds, obj))
+    _getBoundsForNonContainer(obj) {
+        var bounds = new Bounds()
+        var imgr = this._defaultImgrToZero(new Imgr(obj))
 
         bounds.regX = imgr.regX
         bounds.regY = imgr.regY
@@ -308,10 +251,6 @@ export default class Collision {
     }
 
     getBounds(obj) {
-        var bounds = new Bounds()
-        if (obj instanceof Container) {
-            return this._getBoundsForContainer(bounds, obj)
-        }
-        return this._getBoundsForNonContainer(bounds, obj)
+        return this._getBoundsForNonContainer(obj)
     }
 }

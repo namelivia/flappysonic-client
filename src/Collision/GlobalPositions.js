@@ -1,27 +1,18 @@
 export default class GlobalPositions {
     constructor(obj, imgr) {
-        this.gp = obj.localToGlobal(0 - imgr.regX, 0 - imgr.regY)
-        this.gp2 = obj.localToGlobal(
+        var gp = obj.localToGlobal(0 - imgr.regX, 0 - imgr.regY)
+        var gp2 = obj.localToGlobal(
             imgr.width - imgr.regX,
             imgr.height - imgr.regY
         )
-        this.gp3 = obj.localToGlobal(imgr.width - imgr.regX, 0 - imgr.regY)
-        this.gp4 = obj.localToGlobal(0 - imgr.regX, imgr.height - imgr.regY)
-    }
+        var gp3 = obj.localToGlobal(imgr.width - imgr.regX, 0 - imgr.regY)
+        var gp4 = obj.localToGlobal(0 - imgr.regX, imgr.height - imgr.regY)
+        var xCoordinates = [gp.x, gp2.x, gp3.x, gp4.x]
+        var yCoordinates = [gp.y, gp2.y, gp3.y, gp4.y]
 
-    getMinX() {
-        return Math.min(this.gp.x, this.gp2.x, this.gp3.x, this.gp4.x)
-    }
-
-    getMaxX() {
-        return Math.max(this.gp.x, this.gp2.x, this.gp3.x, this.gp4.x)
-    }
-
-    getMinY() {
-        return Math.min(this.gp.y, this.gp2.y, this.gp3.y, this.gp4.y)
-    }
-
-    getMaxY() {
-        return Math.max(this.gp.y, this.gp2.y, this.gp3.y, this.gp4.y)
+        this.minX = Math.min(...xCoordinates)
+        this.minY = Math.min(...yCoordinates)
+        this.maxX = Math.max(...xCoordinates)
+        this.maxY = Math.max(...yCoordinates)
     }
 }

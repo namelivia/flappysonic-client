@@ -24,8 +24,8 @@ export default class Collision {
 
     checkPixelCollision(bitmap1, bitmap2) {
         var imageData1, imageData2, pixelIntersection
-
-        if (!this._checkRectCollision(bitmap1, bitmap2)) {
+        var intersection = this._checkRectCollision(bitmap1, bitmap2)
+        if (!intersection) {
             return false
         }
 
@@ -242,10 +242,10 @@ export default class Collision {
         bounds.regY = imgr.regY
 
         var globalPositions = new GlobalPositions(obj, imgr)
-        bounds.x = globalPositions.getMinX()
-        bounds.y = globalPositions.getMinY()
-        bounds.width = globalPositions.getMaxX() - bounds.x
-        bounds.height = globalPositions.getMaxY() - bounds.y
+        bounds.x = globalPositions.minX
+        bounds.y = globalPositions.minY
+        bounds.width = globalPositions.maxX - bounds.x
+        bounds.height = globalPositions.maxY - bounds.y
         return bounds
     }
 }

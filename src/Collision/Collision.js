@@ -224,28 +224,49 @@ export default class Collision {
         }
     }
 
+    _getBoundsForChild(bounds, child) {
+        var cbounds = this.getBounds(child)
+        if (cbounds.x < bounds.x) {
+            bounds.x = cbounds.x
+        }
+        if (cbounds.y < bounds.y) {
+            bounds.y = cbounds.y
+        }
+        if (cbounds.x + cbounds.width > bounds.x2) {
+            bounds.x2 = cbounds.x + cbounds.width
+        }
+        if (cbounds.y + cbounds.height > bounds.y2) {
+            bounds.y2 = cbounds.y + cbounds.height
+        }
+        return bounds
+    }
+
+    _replaceInfinityWithZero(bound) {
+        if (bound == Infinity) {
+            return 0
+        }
+        return bound
+    }
+
+    _replaceInfinitiesWithZeroes(bounds) {
+        bounds.x = this._replaceInfinityWithZero(bounds.x)
+        bounds.y = this._replaceInfinityWithZero(bounds.y)
+        bounds.x2 = this._replaceInfinityWithZero(bounds.x2)
+        bounds.y2 = this._replaceInfinityWithZero(bounds.y2)
+        return bounds
+    }
+
     _getBoundsForContainer(bounds, obj) {
         bounds.x2 = -Infinity
         bounds.y2 = -Infinity
         var children = obj.children,
-            l = children.length,
-            cbounds,
-            c
-        for (c = 0; c < l; c++) {
-            cbounds = this.getBounds(children[c])
-            if (cbounds.x < bounds.x) bounds.x = cbounds.x
-            if (cbounds.y < bounds.y) bounds.y = cbounds.y
-            if (cbounds.x + cbounds.width > bounds.x2)
-                bounds.x2 = cbounds.x + cbounds.width
-            if (cbounds.y + cbounds.height > bounds.y2)
-                bounds.y2 = cbounds.y + cbounds.height
-            //if ( cbounds.x - bounds.x + cbounds.width  > bounds.width  ) bounds.width  = cbounds.x - bounds.x + cbounds.width
-            //if ( cbounds.y - bounds.y + cbounds.height > bounds.height ) bounds.height = cbounds.y - bounds.y + cbounds.height
+            childrenCount = children.length,
+            index
+        for (index = 0; index < childrenCount; index++) {
+            bounds = this._getBoundsForChild(bounds, children[index])
         }
-        if (bounds.x == Infinity) bounds.x = 0
-        if (bounds.y == Infinity) bounds.y = 0
-        if (bounds.x2 == Infinity) bounds.x2 = 0
-        if (bounds.y2 == Infinity) bounds.y2 = 0
+            
+        bounds = this._replaceInfinitiesWithZeroes(bounds)
 
         bounds.width = bounds.x2 - bounds.x
         bounds.height = bounds.y2 - bounds.y

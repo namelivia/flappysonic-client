@@ -224,91 +224,138 @@ export default class Collision {
         }
     }
 
+    _getBoundsForContainer(bounds, obj) {
+        bounds.x2 = -Infinity
+        bounds.y2 = -Infinity
+        var children = obj.children,
+            l = children.length,
+            cbounds,
+            c
+        for (c = 0; c < l; c++) {
+            cbounds = this.getBounds(children[c])
+            if (cbounds.x < bounds.x) bounds.x = cbounds.x
+            if (cbounds.y < bounds.y) bounds.y = cbounds.y
+            if (cbounds.x + cbounds.width > bounds.x2)
+                bounds.x2 = cbounds.x + cbounds.width
+            if (cbounds.y + cbounds.height > bounds.y2)
+                bounds.y2 = cbounds.y + cbounds.height
+            //if ( cbounds.x - bounds.x + cbounds.width  > bounds.width  ) bounds.width  = cbounds.x - bounds.x + cbounds.width
+            //if ( cbounds.y - bounds.y + cbounds.height > bounds.height ) bounds.height = cbounds.y - bounds.y + cbounds.height
+        }
+        if (bounds.x == Infinity) bounds.x = 0
+        if (bounds.y == Infinity) bounds.y = 0
+        if (bounds.x2 == Infinity) bounds.x2 = 0
+        if (bounds.y2 == Infinity) bounds.y2 = 0
+
+        bounds.width = bounds.x2 - bounds.x
+        bounds.height = bounds.y2 - bounds.y
+        delete bounds.x2
+        delete bounds.y2
+        return bounds
+    }
+
+    _getBoundsX(globalPositions) {
+        var { gp, gp2, gp3, gp4 } = globalPositions
+        return Math.min(Math.min(Math.min(gp.x, gp2.x), gp3.x), gp4.x)
+    }
+
+    _getBoundsY(globalPositions) {
+        var { gp, gp2, gp3, gp4 } = globalPositions
+        return Math.min(Math.min(Math.min(gp.y, gp2.y), gp3.y), gp4.y)
+    }
+
+    _getBoundsWidth(globalPositions, boundsX) {
+        var { gp, gp2, gp3, gp4 } = globalPositions
+        return Math.max(Math.max(Math.max(gp.x, gp2.x), gp3.x), gp4.x) - boundsX
+    }
+
+    _getBoundsHeight(globalPositions, boundsY) {
+        var { gp, gp2, gp3, gp4 } = globalPositions
+        return Math.max(Math.max(Math.max(gp.y, gp2.y), gp3.y), gp4.y) - boundsY
+    }
+
+    _getImgrForBitmap(obj) {
+        var imgr = {}
+        var sr = obj.sourceRect || obj.image
+        imgr.width = sr.width
+        imgr.height = sr.height
+        return imgr
+    }
+
+    _getImgrForSprite(obj) {
+        var imgr = {}
+        var cframe = obj.spriteSheet.getFrame(obj.currentFrame)
+        imgr.width = cframe.rect.width
+        imgr.height = cframe.rect.height
+        imgr.regX = cframe.regX
+        imgr.regY = cframe.regY
+        return imgr
+    }
+
+    _setBoundsToObj(obj, bounds) {
+        bounds.x = obj.x || 0
+        bounds.y = obj.y || 0
+        return bounds
+    }
+
+    _defaultImgrToZero(imgr) {
+        imgr.regX = imgr.regX || 0
+        imgr.width = imgr.width || 0
+        imgr.regY = imgr.regY || 0
+        imgr.height = imgr.height || 0
+        return imgr
+    }
+
+    _getGlobalPositions(obj, imgr) {
+        return {
+            gp: obj.localToGlobal(0 - imgr.regX, 0 - imgr.regY),
+            gp2: obj.localToGlobal(
+                imgr.width - imgr.regX,
+                imgr.height - imgr.regY
+            ),
+            gp3: obj.localToGlobal(imgr.width - imgr.regX, 0 - imgr.regY),
+            gp4: obj.localToGlobal(0 - imgr.regX, imgr.height - imgr.regY),
+        }
+    }
+
+    _spriteFrameHasImage(obj) {
+        return (
+            obj.spriteSheet._frames &&
+            obj.spriteSheet._frames[obj.currentFrame] &&
+            obj.spriteSheet._frames[obj.currentFrame].image
+        )
+    }
+
+    _getImgr(bounds, obj) {
+        if (obj instanceof Bitmap) {
+            return this._getBoundsForBitmap(obj)
+        }
+        if (obj instanceof Sprite && this._spriteFrameHasImage(obj)) {
+            return this._getImgrForSprite(obj)
+        }
+        return this._setBoundsToObj(obj, bounds)
+    }
+
+    _getBoundsForNonContainer(bounds, obj) {
+        var imgr = this._defaultImgrToZero(this._getImgr(bounds, obj))
+
+        bounds.regX = imgr.regX
+        bounds.regY = imgr.regY
+
+        var globalPositions = this._getGlobalPositions(obj, imgr)
+
+        bounds.x = this._getBoundsX(globalPositions)
+        bounds.y = this._getBoundsY(globalPositions)
+        bounds.width = this._getBoundsWidth(globalPositions, bounds.x)
+        bounds.height = this._getBoundsHeight(globalPositions, bounds.y)
+        return bounds
+    }
+
     getBounds(obj) {
         var bounds = { x: Infinity, y: Infinity, width: 0, height: 0 }
         if (obj instanceof Container) {
-            bounds.x2 = -Infinity
-            bounds.y2 = -Infinity
-            var children = obj.children,
-                l = children.length,
-                cbounds,
-                c
-            for (c = 0; c < l; c++) {
-                cbounds = this.getBounds(children[c])
-                if (cbounds.x < bounds.x) bounds.x = cbounds.x
-                if (cbounds.y < bounds.y) bounds.y = cbounds.y
-                if (cbounds.x + cbounds.width > bounds.x2)
-                    bounds.x2 = cbounds.x + cbounds.width
-                if (cbounds.y + cbounds.height > bounds.y2)
-                    bounds.y2 = cbounds.y + cbounds.height
-                //if ( cbounds.x - bounds.x + cbounds.width  > bounds.width  ) bounds.width  = cbounds.x - bounds.x + cbounds.width
-                //if ( cbounds.y - bounds.y + cbounds.height > bounds.height ) bounds.height = cbounds.y - bounds.y + cbounds.height
-            }
-            if (bounds.x == Infinity) bounds.x = 0
-            if (bounds.y == Infinity) bounds.y = 0
-            if (bounds.x2 == Infinity) bounds.x2 = 0
-            if (bounds.y2 == Infinity) bounds.y2 = 0
-
-            bounds.width = bounds.x2 - bounds.x
-            bounds.height = bounds.y2 - bounds.y
-            delete bounds.x2
-            delete bounds.y2
-        } else {
-            var gp,
-                gp2,
-                gp3,
-                gp4,
-                imgr = {},
-                sr
-            if (obj instanceof Bitmap) {
-                sr = obj.sourceRect || obj.image
-
-                imgr.width = sr.width
-                imgr.height = sr.height
-            } else if (obj instanceof Sprite) {
-                if (
-                    obj.spriteSheet._frames &&
-                    obj.spriteSheet._frames[obj.currentFrame] &&
-                    obj.spriteSheet._frames[obj.currentFrame].image
-                ) {
-                    var cframe = obj.spriteSheet.getFrame(obj.currentFrame)
-                    imgr.width = cframe.rect.width
-                    imgr.height = cframe.rect.height
-                    imgr.regX = cframe.regX
-                    imgr.regY = cframe.regY
-                } else {
-                    bounds.x = obj.x || 0
-                    bounds.y = obj.y || 0
-                }
-            } else {
-                bounds.x = obj.x || 0
-                bounds.y = obj.y || 0
-            }
-
-            imgr.regX = imgr.regX || 0
-            imgr.width = imgr.width || 0
-            imgr.regY = imgr.regY || 0
-            imgr.height = imgr.height || 0
-            bounds.regX = imgr.regX
-            bounds.regY = imgr.regY
-
-            gp = obj.localToGlobal(0 - imgr.regX, 0 - imgr.regY)
-            gp2 = obj.localToGlobal(
-                imgr.width - imgr.regX,
-                imgr.height - imgr.regY
-            )
-            gp3 = obj.localToGlobal(imgr.width - imgr.regX, 0 - imgr.regY)
-            gp4 = obj.localToGlobal(0 - imgr.regX, imgr.height - imgr.regY)
-
-            bounds.x = Math.min(Math.min(Math.min(gp.x, gp2.x), gp3.x), gp4.x)
-            bounds.y = Math.min(Math.min(Math.min(gp.y, gp2.y), gp3.y), gp4.y)
-            bounds.width =
-                Math.max(Math.max(Math.max(gp.x, gp2.x), gp3.x), gp4.x) -
-                bounds.x
-            bounds.height =
-                Math.max(Math.max(Math.max(gp.y, gp2.y), gp3.y), gp4.y) -
-                bounds.y
+            return this._getBoundsForContainer(bounds, obj)
         }
-        return bounds
+        return this._getBoundsForNonContainer(bounds, obj)
     }
 }

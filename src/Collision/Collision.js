@@ -1,6 +1,7 @@
 import { Bitmap, Sprite, SpriteSheetUtils, Container } from 'createjs'
 import Bounds from './Bounds'
 import GlobalPositions from './GlobalPositions'
+import Imgr from './Imgr'
 export default class Collision {
     constructor() {
         this.collisionCanvas = document.createElement('canvas')
@@ -284,30 +285,6 @@ export default class Collision {
         return globalPositions.getMaxY() - boundsY
     }
 
-    _getImgrForBitmap(obj) {
-        var imgr = {}
-        var sr = obj.sourceRect || obj.image
-        imgr.width = sr.width
-        imgr.height = sr.height
-        return imgr
-    }
-
-    _getImgrForSprite(obj) {
-        var imgr = {}
-        var cframe = obj.spriteSheet.getFrame(obj.currentFrame)
-        imgr.width = cframe.rect.width
-        imgr.height = cframe.rect.height
-        imgr.regX = cframe.regX
-        imgr.regY = cframe.regY
-        return imgr
-    }
-
-    _setBoundsToObj(obj, bounds) {
-        bounds.x = obj.x || 0
-        bounds.y = obj.y || 0
-        return bounds
-    }
-
     _defaultImgrToZero(imgr) {
         imgr.regX = imgr.regX || 0
         imgr.width = imgr.width || 0
@@ -316,26 +293,8 @@ export default class Collision {
         return imgr
     }
 
-    _spriteFrameHasImage(obj) {
-        return (
-            obj.spriteSheet._frames &&
-            obj.spriteSheet._frames[obj.currentFrame] &&
-            obj.spriteSheet._frames[obj.currentFrame].image
-        )
-    }
-
-    _getImgr(bounds, obj) {
-        if (obj instanceof Bitmap) {
-            return this._getBoundsForBitmap(obj)
-        }
-        if (obj instanceof Sprite && this._spriteFrameHasImage(obj)) {
-            return this._getImgrForSprite(obj)
-        }
-        return this._setBoundsToObj(obj, bounds)
-    }
-
     _getBoundsForNonContainer(bounds, obj) {
-        var imgr = this._defaultImgrToZero(this._getImgr(bounds, obj))
+        var imgr = this._defaultImgrToZero(new Imgr(bounds, obj))
 
         bounds.regX = imgr.regX
         bounds.regY = imgr.regY

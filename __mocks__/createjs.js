@@ -2,6 +2,7 @@ export const mockAddChild = jest.fn();
 export const mockedContainerConstructor = jest.fn();
 export const mockedSpriteConstructor = jest.fn();
 export const spriteSheetConstructorMock = jest.fn();
+export const mockedBitmapConstructor = jest.fn();
 export const gotoAndPlayMock = jest.fn();
 export class Container {
 	constructor() {

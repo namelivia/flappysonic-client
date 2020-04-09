@@ -1,6 +1,7 @@
 import { Container } from 'createjs'
 import Floor from './Floor'
 import Clouds from './Clouds'
+import { STATE_ALIVE } from '../Level/Level.js'
 export default class Scenario extends Container {
     constructor(cloudsImage, floorImage) {
         super()
@@ -16,12 +17,12 @@ export default class Scenario extends Container {
         this.addChild(this.floor1, this.floor2, this.clouds1, this.clouds2)
     }
 
-    tick(event, state) {
-        if (state == 0) {
-            this.floor1.tick(event, state)
-            this.floor2.tick(event, state)
-            this.clouds1.tick(event, state)
-            this.clouds2.tick(event, state)
+    tick(state) {
+        if (state == STATE_ALIVE) {
+            this.floor1.tick()
+            this.floor2.tick()
+            this.clouds1.tick()
+            this.clouds2.tick()
         }
     }
 }

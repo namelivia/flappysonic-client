@@ -47,7 +47,7 @@ export default class Level {
     tick(event) {
         //updates all entities
         this.player.tick(event, this.state)
-        this.scenario.tick(event, this.state)
+        this.scenario.tick(this.state)
         this.enemies.tick(event, this.state)
 
         //checks every update if

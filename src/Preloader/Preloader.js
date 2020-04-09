@@ -1,6 +1,6 @@
 import { LoadQueue, Sound } from 'createjs'
 
-export const manifest = [
+export const Manifest = [
     { id: 'floor', src: 'img/background1.png' },
     { id: 'clouds', src: 'img/background2.png' },
     { id: 'instructions', src: 'img/instructions.png' },
@@ -19,11 +19,11 @@ export default class Preloader {
         Sound.alternateExtensions = ['mp3']
         this.queue.installPlugin(Sound)
         this.queue.addEventListener('complete', onLoaded)
-        this.queue.addEventListener('Progress', onLoading)
+        this.queue.addEventListener('progress', onLoading)
     }
 
     load() {
-        this.queue.loadManifest(manifest)
+        this.queue.loadManifest(Manifest)
     }
 
     getProgress() {

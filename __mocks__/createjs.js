@@ -6,6 +6,11 @@ export const mockedSpriteConstructor = jest.fn();
 export const spriteSheetConstructorMock = jest.fn();
 export const mockedBitmapConstructor = jest.fn();
 export const gotoAndPlayMock = jest.fn();
+export const loadQueueConstructorMock = jest.fn();
+export const installPluginMock = jest.fn();
+export const addEventListenerMock = jest.fn();
+export const loadManifestMock = jest.fn();
+export const getResultMock = jest.fn();
 export class Container {
 	constructor() {
 		return mockedContainerConstructor()
@@ -35,4 +40,16 @@ export class Stage{
 	}
 	addChild = mockAddChild
 	update = mockUpdate
+}
+export class LoadQueue {
+	constructor(data) {
+	    this.progress = 20
+		return loadQueueConstructorMock(data)
+	}
+	installPlugin = installPluginMock
+	addEventListener = addEventListenerMock
+	loadManifest = loadManifestMock
+	getResult = getResultMock
+}
+export class Sound {
 }

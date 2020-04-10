@@ -1,6 +1,7 @@
 import { Stage, Ticker, Sound } from 'createjs'
 import Scenario from '../Scenario/Scenario'
 import Sonic from '../Sonic/Sonic'
+import CollisionManager from '../CollisionManager/CollisionManager'
 import Enemies from '../Enemies/Enemies'
 import Score from '../Score/Score'
 import RestartText from '../RestartText/RestartText'
@@ -19,6 +20,7 @@ export default class Level {
     }
 
     start() {
+        this.score = 0
         this.canvas.removeEventListener('click', this.restartOnClick)
         this.stage = new Stage(this.canvas)
         this.state = STATE_ALIVE
@@ -27,19 +29,17 @@ export default class Level {
             this.preloader.getResult('floor')
         )
         this.sonic = new Sonic(this.preloader.getResult('sonic'))
+        this.stage.addChild(this.scenario)
         //I can't test this ATM
-        //this.enemies = new Enemies(this.preloader.getResult('enemy'))
-        this.score = new Score(this.preloader.getResult('score'))
-        this.stage.addChild(
-            this.scenario,
-            this.sonic,
-            this.enemies,
-            this.score
+        this.enemies = new Enemies(
+            this.stage,
+            this.preloader.getResult('enemy')
         )
+        this.collisionManager = new CollisionManager(this.sonic, this.enemies)
+        this.scoreCounter = new Score(this.preloader.getResult('score'))
+        this.stage.addChild(this.sonic, this.scoreCounter)
 
         this.music = Sound.play('music')
-        //I can't test this ATM
-        //this.currentScore = this.enemies.score
 
         this.canvas.addEventListener('click', this.jumpOnClick)
         if (!Ticker.hasEventListener('tick')) {
@@ -47,10 +47,11 @@ export default class Level {
         }
     }
 
-    _isCollidingWithEnemy() {
-        return this.enemies.collision(this.sonic.sprite) ||
-            this.sonic.sprite.y < -60 ||
-            this.sonic.sprite.y > 280
+    _shouldKillPlayer() {
+        return (
+            this.collisionManager.thereIsACollision() ||
+            this.sonic.isOutOfBounds()
+        )
     }
 
     _killPlayer() {
@@ -64,10 +65,10 @@ export default class Level {
 
     _updateWhenAlive() {
         //I can't test this ATM
-        /*if (this._isCollidingWithEnemy()) {
+        if (this._shouldKillPlayer()) {
             this._killPlayer()
             //socket.emit('send', { hiscore: currentScore, name: playerName})
-        }*/
+        }
     }
 
     _waitForRestart() {
@@ -84,20 +85,18 @@ export default class Level {
     }
 
     _updateScore() {
-        //I can't test this ATM
-        /*var newScore = this.enemies.score
-        if (newScore != this.currentScore) {
-            this.currentScore = newScore
+        if (this.enemies.areSurpassed()) {
+            this.score = this.score + 1
             Sound.play('ring')
-            this.score.update(newScore)
-        }*/
+            this.scoreCounter.update(this.score)
+        }
     }
 
     tick(event) {
-        this.sonic.tick(event, this.state)
-        this.scenario.tick(event, this.state)
+        this.sonic.tick(this.state)
+        this.scenario.tick(this.tate)
         //I can't test this ATM
-        //this.enemies.tick(event, this.state)
+        this.enemies.tick(this.state)
 
         if (this.state == STATE_ALIVE) {
             this._updateWhenAlive()

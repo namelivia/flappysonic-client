@@ -39,15 +39,10 @@ export default class Enemies {
 
     areColliding(collisionManager, sonic) {
         for (var index = 0; index < this.NUM_ENEMIES; index++) {
-            var collision = collisionManager.checkPixelCollision(
-                sonic,
-                this.enemies[index]
-            )
-            if (collision) {
+            if (collisionManager.checkPixelCollision(sonic.sprite, this.enemies[index].sprite)) {
                 return true
             }
         }
-
         return false
     }
 }

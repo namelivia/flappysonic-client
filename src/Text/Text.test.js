@@ -1,11 +1,5 @@
 import Text from './Text'
-import {
-    mockAddChild,
-    mockedTextConstructor,
-    Stage,
-    Canvas,
-    Text as CreateJSText
-} from 'createjs'
+import { mockAddChild, mockedTextConstructor, Stage, Canvas } from 'createjs'
 
 test('should display text correctly in the middle of the screen', () => {
     const text = initializeText()

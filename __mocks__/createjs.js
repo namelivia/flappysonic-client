@@ -13,6 +13,7 @@ export const getResultMock = jest.fn();
 export const removeEventListenerMock = jest.fn();
 export const addEventListenerMock = jest.fn();
 export const hasEventListenerMock = jest.fn();
+export const mockedTextConstructor = jest.fn();
 export const addChildMock = jest.fn();
 export const updateMock = jest.fn();
 export const playMock = jest.fn();
@@ -34,12 +35,16 @@ export class SpriteSheet {
 		return spriteSheetConstructorMock(data)
 	}
 }
-export class Bitmap{
+export class Bitmap {
 	constructor(data) {
 		return mockedBitmapConstructor(data)
 	}
 }
 export class Canvas {
+    constructor() {
+        this.width = 640
+        this.height = 480
+    }
 	removeEventListener = removeEventListenerMock
 	addEventListener = addEventListenerMock
 }
@@ -49,6 +54,11 @@ export class Stage{
 	}
 	addChild = mockAddChild
 	update = mockUpdate
+}
+export class Text {
+	constructor(data) {
+		return mockedTextConstructor(data)
+	}
 }
 export class LoadQueue {
 	constructor(data) {

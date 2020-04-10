@@ -4,7 +4,7 @@ import Sonic from '../Sonic/Sonic'
 import CollisionManager from '../CollisionManager/CollisionManager'
 import Enemies from '../Enemies/Enemies'
 import Score from '../Score/Score'
-import RestartText from '../RestartText/RestartText'
+import Text from '../Text/Text'
 
 export const STATE_ALIVE = 0
 export const STATE_DEAD = 1
@@ -72,7 +72,7 @@ export default class Level {
     }
 
     _waitForRestart() {
-        new RestartText(this.stage, this.canvas)
+        new Text('Click to restart', this.stage, this.canvas)
         this.canvas.removeEventListener('click', this.jumpOnClick)
         this.canvas.addEventListener('click', this.restartOnClick)
     }

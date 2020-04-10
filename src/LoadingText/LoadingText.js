@@ -1,6 +1,6 @@
 import Text from '../Text/Text'
 
-export default class LoadingText extends Text{
+export default class LoadingText extends Text {
     constructor(stage, canvas) {
         super('Loading', stage, canvas)
     }

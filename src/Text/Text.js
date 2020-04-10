@@ -1,4 +1,4 @@
-import { Text as CreateJSText} from 'createjs'
+import { Text as CreateJSText } from 'createjs'
 
 export default class Text {
     constructor(message, stage, canvas) {

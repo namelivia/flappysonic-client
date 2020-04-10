@@ -45,21 +45,28 @@ export default class Level {
         }
     }
 
-    _updateWhenAlive() {
-        if (
-            this.enemies.collision(this.sonic.sprite) ||
+    _isCollidingWithEnemy() {
+        return this.enemies.collision(this.sonic.sprite) ||
             this.sonic.sprite.y < -60 ||
             this.sonic.sprite.y > 280
-        ) {
-            this.canvas.removeEventListener('click', this.jumpOnClick)
-            this.sonic.die(this.preloader.getResult('sonicHit'))
-            this.state = 1
-            this.ticks = 0
-            this.music.stop()
-            Sound.play('miss')
+    }
+
+    _killPlayer() {
+        this.canvas.removeEventListener('click', this.jumpOnClick)
+        this.sonic.die(this.preloader.getResult('sonicHit'))
+        this.state = 1
+        this.ticks = 0
+        this.music.stop()
+        Sound.play('miss')
+    }
+
+    _updateWhenAlive() {
+        if (this._isCollidingWithEnemy()) {
+            this._killPlayer()
             //socket.emit('send', { hiscore: currentScore, name: playerName})
         }
     }
+
     _waitForRestart() {
         new RestartText(this.stage, this.canvas)
         this.canvas.removeEventListener('click', this.jumpOnClick)

@@ -54,13 +54,25 @@ test('updating data while going down', () => {
   expect(gotoAndPlayMock).toHaveBeenCalledWith('down')
 })
 
+test('should be out of bounds', () => {
+  const sonic = initializeSonic(20, -70, 0)
+  expect(sonic.isOutOfBounds()).toBe(true)
+
+  const sonic2 = initializeSonic(20, 290, 0)
+  expect(sonic2.isOutOfBounds()).toBe(true)
+
+  const sonic3 = initializeSonic(20, 100, 0)
+  expect(sonic3.isOutOfBounds()).toBe(false)
+})
+
+
 test('updating data while dead', () => {
   const sonic = initializeSonic(20, 10, 0)
   sonic.die('spritesheet')
   updateSonic(sonic, STATE_DEAD)
-  assertSonicStatus(sonic, 20, 20, 0)
+  assertSonicStatus(sonic, 26, 16, 0)
   expect(gotoAndPlayMock).toHaveBeenCalledTimes(1)
-  expect(gotoAndPlayMock).toHaveBeenCalledWith('down')
+  expect(gotoAndPlayMock).toHaveBeenCalledWith('dead')
   expect(spriteSheetConstructorMock).toHaveBeenCalledTimes(2)
   expect(spriteSheetConstructorMock).toHaveBeenCalledWith(HurtSpriteSheetData)
   expect(mockedSpriteConstructor).toHaveBeenCalledTimes(2);
@@ -90,5 +102,5 @@ const assertSonicStatus = (sonic, x, y, jump) => {
 }
 
 const updateSonic = (sonic, currentStatus) => {
-  sonic.tick('event', currentStatus)
+  sonic.tick(currentStatus)
 }

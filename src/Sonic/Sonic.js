@@ -64,21 +64,27 @@ export default class Sonic extends Container {
         return this.sprite.y < -60 || this.sprite.y > 280
     }
 
-    tick(state) {
-        let newAnimationKey = 'down'
-        if (this.isDead(state)) {
-            newAnimationKey = 'dead'
-            this.sprite.x += 6
-            this.sprite.y += 6
-            this.hurtSprite.y += 15
-            this.hurtSprite.x -= 3
-        } else {
-            this.updateVerticalPosition()
-            if (this.isJumping()) {
-                this.decreaseJump()
-                newAnimationKey = this.isGoingUp() ? 'up' : 'straight'
+    _updateWhenAlive() {
+        this.updateVerticalPosition()
+        if (this.isJumping()) {
+            this.decreaseJump()
+            if (this.isGoingUp()) {
+                return 'up'
             }
+            return 'straight'
         }
+        return 'down'
+    }
+    _updateWhenDead() {
+        this.sprite.x += 6
+        this.sprite.y += 6
+        this.hurtSprite.y += 15
+        this.hurtSprite.x -= 3
+        return 'dead'
+    }
+
+    tick(state) {
+        let newAnimationKey = this.isDead(state) ? this._updateWhenDead() : this._updateWhenAlive()
         this.setAnimation(newAnimationKey)
     }
 

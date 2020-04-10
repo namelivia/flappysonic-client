@@ -1,7 +1,7 @@
 import { Container } from 'createjs'
 import Floor from './Floor'
 import Clouds from './Clouds'
-import { STATE_ALIVE } from '../Level/Level.js'
+import { STATE_ALIVE } from '../Level/Level'
 export default class Scenario extends Container {
     constructor(cloudsImage, floorImage) {
         super()

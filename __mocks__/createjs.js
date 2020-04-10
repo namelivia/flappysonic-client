@@ -8,9 +8,14 @@ export const mockedBitmapConstructor = jest.fn();
 export const gotoAndPlayMock = jest.fn();
 export const loadQueueConstructorMock = jest.fn();
 export const installPluginMock = jest.fn();
-export const addEventListenerMock = jest.fn();
 export const loadManifestMock = jest.fn();
 export const getResultMock = jest.fn();
+export const removeEventListenerMock = jest.fn();
+export const addEventListenerMock = jest.fn();
+export const hasEventListenerMock = jest.fn();
+export const addChildMock = jest.fn();
+export const updateMock = jest.fn();
+export const playMock = jest.fn();
 export class Container {
 	constructor() {
 		return mockedContainerConstructor()
@@ -34,6 +39,10 @@ export class Bitmap{
 		return mockedBitmapConstructor(data)
 	}
 }
+export class Canvas {
+	removeEventListener = removeEventListenerMock
+	addEventListener = addEventListenerMock
+}
 export class Stage{
 	constructor(data) {
 		return mockedStageConstructor(data)
@@ -51,5 +60,10 @@ export class LoadQueue {
 	loadManifest = loadManifestMock
 	getResult = getResultMock
 }
-export class Sound {
+export const Sound = {
+    play: playMock
+}
+export const Ticker = {
+    hasEventListener: hasEventListenerMock,
+    addEventListener: addEventListenerMock,
 }

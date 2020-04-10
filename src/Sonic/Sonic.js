@@ -60,7 +60,11 @@ export default class Sonic extends Container {
         return state == STATE_DEAD
     }
 
-    tick(event, state) {
+    isOutOfBounds() {
+        return this.sprite.y < -60 || this.sprite.y > 280
+    }
+
+    tick(state) {
         let newAnimationKey = 'down'
         if (this.isDead(state)) {
             newAnimationKey = 'dead'

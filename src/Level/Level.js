@@ -37,15 +37,14 @@ export default class Level {
             this.score
         )
 
+        this.music = Sound.play('music')
         //I can't test this ATM
-        //this.music = Sound.play('music')
         //this.currentScore = this.enemies.score
 
         this.canvas.addEventListener('click', this.jumpOnClick)
-        //I can't test this ATM
-        /*if (!Ticker.hasEventListener('tick')) {
+        if (!Ticker.hasEventListener('tick')) {
             Ticker.addEventListener('tick', this.onTick)
-        }*/
+        }
     }
 
     _isCollidingWithEnemy() {

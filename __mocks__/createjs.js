@@ -13,9 +13,11 @@ export const loadManifestMock = jest.fn();
 export const getResultMock = jest.fn();
 export const removeEventListenerMock = jest.fn();
 export const addEventListenerMock = jest.fn();
+export const hasEventListenerMock = jest.fn();
 export const mockedStageConstructor = jest.fn();
 export const addChildMock = jest.fn();
 export const updateMock = jest.fn();
+export const playMock = jest.fn();
 export class Container {
 	constructor() {
 		return mockedContainerConstructor()
@@ -61,4 +63,11 @@ export class LoadQueue {
 	getResult = getResultMock
 }
 export class Sound {
+}
+export const Sound = {
+    play: playMock
+}
+export const Ticker = {
+    hasEventListener: hasEventListenerMock,
+    addEventListener: addEventListenerMock,
 }

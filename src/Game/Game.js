@@ -55,7 +55,8 @@ export default class Game {
         this.preloader = new Preloader(
             //onLoading
             () => {
-                loadingText.update(this.preloader.getProgress(), this.stage)
+                loadingText.update(this.preloader.getProgress())
+                this.stage.update()
             },
             //onLoaded
             () => {

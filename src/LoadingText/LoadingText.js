@@ -1,8 +1,8 @@
 import Text from '../Text/Text'
 
 export default class LoadingText extends Text{
-    constructor(message, stage, canvas) {
-        super.constructor(message, stage, canvas)
+    constructor(stage, canvas) {
+        super('Loading', stage, canvas)
     }
 
     update(progress) {

@@ -51,7 +51,7 @@ export default class Game {
     }
 
     startLoading() {
-        let loadingText = new LoadingText('Loading', this.stage, this.canvas)
+        let loadingText = new LoadingText(this.stage, this.canvas)
         this.preloader = new Preloader(
             //onLoading
             () => {

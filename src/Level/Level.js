@@ -9,7 +9,7 @@ export const STATE_DEAD = 1
 
 export default class Level {
     restartOnClick = () => this.start()
-    jumpOnClick = () => this.player.doJump()
+    jumpOnClick = () => this.sonic.doJump()
     onTick = (evt) => this.tick(evt)
 
     constructor(canvas, preloader) {
@@ -25,12 +25,12 @@ export default class Level {
             this.preloader.getResult('clouds'),
             this.preloader.getResult('floor')
         )
-        this.player = new Sonic(this.preloader.getResult('sonic'))
+        this.sonic = new Sonic(this.preloader.getResult('sonic'))
         this.enemies = new Enemies(this.preloader.getResult('enemy'))
         this.score = new Score(this.preloader.getResult('score'))
         this.stage.addChild(
             this.scenario,
-            this.player,
+            this.sonic,
             this.enemies,
             this.score
         )
@@ -44,59 +44,67 @@ export default class Level {
         }
     }
 
-    tick(event) {
-        //updates all entities
-        this.player.tick(event, this.state)
-        this.scenario.tick(this.state)
-        this.enemies.tick(event, this.state)
-
-        //checks every update if
-        if (this.state == STATE_ALIVE) {
-            if (
-                this.enemies.collision(this.player.sprite) ||
-                this.player.sprite.y < -60 ||
-                this.player.sprite.y > 280
-            ) {
-                this.canvas.removeEventListener('click', this.jumpOnClick)
-                this.player.die(this.preloader.getResult('sonicHit'))
-                this.state = 1
-                this.ticks = 0
-                this.music.stop()
-                Sound.play('miss')
-                //socket.emit('send', { hiscore: currentScore, name: playerName})
-            }
+    _updateWhenAlive() {
+        if (
+            this.enemies.collision(this.sonic.sprite) ||
+            this.sonic.sprite.y < -60 ||
+            this.sonic.sprite.y > 280
+        ) {
+            this.canvas.removeEventListener('click', this.jumpOnClick)
+            this.sonic.die(this.preloader.getResult('sonicHit'))
+            this.state = 1
+            this.ticks = 0
+            this.music.stop()
+            Sound.play('miss')
+            //socket.emit('send', { hiscore: currentScore, name: playerName})
         }
+    }
+    _waitForRestart() {
+        this.message = new Text(
+            'Click to restart',
+            'bold 24px Helvetica',
+            '#FFFFFF'
+        )
+        this.message.maxWidth = 1000
+        this.message.textAligns = 'center'
+        this.message.x = this.canvas.width / 8
+        this.message.y = this.canvas.height / 2
+        this.stage.addChild(this.message)
+        this.canvas.removeEventListener('click', this.jumpOnClick)
+        this.canvas.addEventListener('click', this.restartOnClick)
+    }
 
-        //checks every update if
-        if (this.state == STATE_DEAD) {
-            this.ticks++
-            if (this.ticks == 100) {
-                this.message = new Text(
-                    'Click to restart',
-                    'bold 24px Helvetica',
-                    '#FFFFFF'
-                )
-                this.message.maxWidth = 1000
-                this.message.textAligns = 'center'
-                this.message.x = this.canvas.width / 8
-                this.message.y = this.canvas.height / 2
-                this.stage.addChild(this.message)
-                this.canvas.removeEventListener('click', this.jumpOnClick)
-                this.canvas.addEventListener('click', this.restartOnClick)
-                /*restartFastButton = new FastButton(canvas, () => {
-          restart()
-          }*/
-            }
+    _updateWhenDead() {
+        this.ticks++
+        if (this.ticks == 100) {
+            this._waitForRestart()
         }
+    }
 
-        //checks every update if
-        this.stage.update(event)
-
+    _updateScore() {
         var newScore = this.enemies.score
         if (newScore != this.currentScore) {
             this.currentScore = newScore
             Sound.play('ring')
             this.score.update(newScore)
         }
+    }
+
+    tick(event) {
+        //updates all entities
+        this.player.tick(event, this.state)
+        this.scenario.tick(this.state)
+        this.enemies.tick(event, this.state)
+
+        if (this.state == STATE_ALIVE) {
+            this._updateWhenAlive()
+        }
+
+        if (this.state == STATE_DEAD) {
+            this._updateWhenDead()
+        }
+
+        this.stage.update(event)
+        this._updateScore()
     }
 }

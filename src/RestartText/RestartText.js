@@ -9,7 +9,7 @@ export default class RestartText {
         )
         this.message.maxWidth = 1000
         this.message.textAlign = 'center'
-        this.message.x = canvas.width / 8
+        this.message.x = canvas.width / 2
         this.message.y = canvas.height / 2
         stage.addChild(this.message)
     }

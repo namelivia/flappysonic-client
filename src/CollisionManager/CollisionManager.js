@@ -7,14 +7,6 @@ export default class CollisionManager {
     }
 
     thereIsACollision() {
-        //TODO: Restructure this
-        /*
-        for (var index = 0; index < this.NUM_ENEMIES; index++) {
-            if (this.collisionManager.checkPixelCollision(sonic, this.enemies[index])) {
-                return true
-            }
-        }
-        return false
-        */
+        return this.enemies.areColliding(this.collisionManager, this.sonic)
     }
 }

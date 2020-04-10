@@ -1,8 +1,6 @@
 import Enemies from './Enemies'
 
-import {
-    Stage
-} from 'createjs'
+import { Stage } from 'createjs'
 
 beforeEach(() => {
     jest.clearAllMocks()
@@ -12,7 +10,6 @@ test('should initialize and rearrange enemies when creating', () => {
     //spriteSheetConstructorMock.mockImplementation(() => 'spriteSheet') TODO I havent been able to do this
     const enemies = initializeEnemies()
 })
-
 
 test('should rearrange all enemies when rearranging', () => {
     const enemies = initializeEnemies()

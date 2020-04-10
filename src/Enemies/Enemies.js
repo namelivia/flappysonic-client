@@ -36,4 +36,18 @@ export default class Enemies {
     areSurpassed() {
         return this.enemies[0].hasReachedSonic()
     }
+
+    areColliding(collisionManager, sonic) {
+        for (var index = 0; index < this.NUM_ENEMIES; index++) {
+            var collision = collisionManager.checkPixelCollision(
+                sonic,
+                this.enemies[index]
+            )
+            if (collision) {
+                return true
+            }
+        }
+
+        return false
+    }
 }

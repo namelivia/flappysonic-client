@@ -4,7 +4,7 @@ import {
     mockedContainerConstructor,
     mockedSpriteConstructor,
     spriteSheetConstructorMock,
-    Stage
+    Stage,
 } from 'createjs'
 
 beforeEach(() => {
@@ -68,6 +68,6 @@ const assertEnemyStatus = (enemy, x, y) => {
     expect(enemy.sprite.y).toBe(y)
 }
 
-const updateEnemy = (enemy) => {
+const updateEnemy = enemy => {
     enemy.tick()
 }

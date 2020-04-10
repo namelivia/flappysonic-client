@@ -11,12 +11,12 @@ export default class Enemies {
         this.rearrange()
     }
 
-    getNewHole() {
+    _getNewHole() {
         return Math.floor(Math.random() * (this.NUM_ENEMIES + 1) - 1)
     }
 
     rearrange() {
-        var hole = this.getNewHole()
+        var hole = this._getNewHole()
         for (var index = 0; index < this.NUM_ENEMIES; index++) {
             this.enemies[index].rearrange(index, hole)
         }

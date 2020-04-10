@@ -1,8 +1,5 @@
 import LoadingText from './LoadingText'
-import {
-    Stage,
-    Canvas,
-} from 'createjs'
+import { Stage, Canvas } from 'createjs'
 
 test('should display the loading percentage', () => {
     const stage = new Stage()

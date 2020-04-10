@@ -84,7 +84,9 @@ export default class Sonic extends Container {
     }
 
     tick(state) {
-        let newAnimationKey = this.isDead(state) ? this._updateWhenDead() : this._updateWhenAlive()
+        let newAnimationKey = this.isDead(state)
+            ? this._updateWhenDead()
+            : this._updateWhenAlive()
         this.setAnimation(newAnimationKey)
     }
 

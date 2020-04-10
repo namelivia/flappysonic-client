@@ -58,9 +58,9 @@ test('updating data while dead', () => {
   const sonic = initializeSonic(20, 10, 0)
   sonic.die('spritesheet')
   updateSonic(sonic, STATE_DEAD)
-  assertSonicStatus(sonic, 26, 16, 0)
+  assertSonicStatus(sonic, 20, 20, 0)
   expect(gotoAndPlayMock).toHaveBeenCalledTimes(1)
-  expect(gotoAndPlayMock).toHaveBeenCalledWith('dead')
+  expect(gotoAndPlayMock).toHaveBeenCalledWith('down')
   expect(spriteSheetConstructorMock).toHaveBeenCalledTimes(2)
   expect(spriteSheetConstructorMock).toHaveBeenCalledWith(HurtSpriteSheetData)
   expect(mockedSpriteConstructor).toHaveBeenCalledTimes(2);

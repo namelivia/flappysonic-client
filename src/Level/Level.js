@@ -20,10 +20,10 @@ export default class Level {
     }
 
     start() {
+        this.state = STATE_ALIVE
         this.score = 0
         this.canvas.removeEventListener('click', this.restartOnClick)
         this.stage = new Stage(this.canvas)
-        this.state = STATE_ALIVE
         this.scenario = new Scenario(
             this.preloader.getResult('clouds'),
             this.preloader.getResult('floor')
@@ -57,7 +57,7 @@ export default class Level {
     _killPlayer() {
         this.canvas.removeEventListener('click', this.jumpOnClick)
         this.sonic.die(this.preloader.getResult('sonicHit'))
-        this.state = 1
+        this.state = STATE_DEAD
         this.ticks = 0
         this.music.stop()
         Sound.play('miss')

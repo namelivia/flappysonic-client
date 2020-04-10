@@ -8,7 +8,11 @@ export const SpriteSheetData = {
 export default class Enemy extends Container {
     constructor(stage, spritesheet) {
         super()
-        this.setup(stage, spritesheet)
+        SpriteSheetData.images = [spritesheet]
+        var dataEnemy = new SpriteSheet(SpriteSheetData)
+        this.sprite = new Sprite(dataEnemy, 'stay')
+        this.framerate = this.calculateFramerate()
+        stage.addChild(this.sprite)
     }
 
     calculateFramerate() {
@@ -23,14 +27,6 @@ export default class Enemy extends Container {
         if (index > hole) {
             this.sprite.y += 100
         }
-    }
-
-    setup(stage, spritesheet) {
-        SpriteSheetData.images = [spritesheet]
-        var dataEnemy = new SpriteSheet(SpriteSheetData)
-        this.sprite = new Sprite(dataEnemy, 'stay')
-        this.framerate = this.calculateFramerate()
-        stage.addChild(this.sprite)
     }
 
     hasReachedEnd() {

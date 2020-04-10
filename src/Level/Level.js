@@ -3,6 +3,7 @@ import Scenario from '../Scenario/Scenario'
 import Sonic from '../Sonic/Sonic'
 import Enemies from '../Enemies/Enemies'
 import Score from '../Score/Score'
+import RestartText from '../RestartText/RestartText'
 
 export const STATE_ALIVE = 0
 export const STATE_DEAD = 1
@@ -60,16 +61,7 @@ export default class Level {
         }
     }
     _waitForRestart() {
-        this.message = new Text(
-            'Click to restart',
-            'bold 24px Helvetica',
-            '#FFFFFF'
-        )
-        this.message.maxWidth = 1000
-        this.message.textAligns = 'center'
-        this.message.x = this.canvas.width / 8
-        this.message.y = this.canvas.height / 2
-        this.stage.addChild(this.message)
+        new RestartText(this.stage, this.canvas)
         this.canvas.removeEventListener('click', this.jumpOnClick)
         this.canvas.addEventListener('click', this.restartOnClick)
     }

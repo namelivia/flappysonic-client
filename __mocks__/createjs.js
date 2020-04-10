@@ -11,6 +11,11 @@ export const installPluginMock = jest.fn();
 export const addEventListenerMock = jest.fn();
 export const loadManifestMock = jest.fn();
 export const getResultMock = jest.fn();
+export const removeEventListenerMock = jest.fn();
+export const addEventListenerMock = jest.fn();
+export const mockedStageConstructor = jest.fn();
+export const addChildMock = jest.fn();
+export const updateMock = jest.fn();
 export class Container {
 	constructor() {
 		return mockedContainerConstructor()
@@ -33,6 +38,10 @@ export class Bitmap{
 	constructor(data) {
 		return mockedBitmapConstructor(data)
 	}
+}
+export class Canvas {
+	removeEventListener = removeEventListenerMock
+	addEventListener = addEventListenerMock
 }
 export class Stage{
 	constructor(data) {

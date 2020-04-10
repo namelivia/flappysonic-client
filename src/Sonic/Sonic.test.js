@@ -1,9 +1,6 @@
 import Sonic, { SpriteSheetData, HurtSpriteSheetData} from './Sonic'
 import { STATE_DEAD, STATE_ALIVE } from '../Level/Level.js'
 import {
-  Container,
-  Sprite,
-  SpriteSheet,
   mockAddChild,
   mockedContainerConstructor,
   mockedSpriteConstructor,

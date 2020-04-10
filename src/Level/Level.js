@@ -1,4 +1,4 @@
-import { Stage, Text, Ticker, Sound } from 'createjs'
+import { Stage, Ticker, Sound } from 'createjs'
 import Scenario from '../Scenario/Scenario'
 import Sonic from '../Sonic/Sonic'
 import Enemies from '../Enemies/Enemies'
@@ -27,7 +27,8 @@ export default class Level {
             this.preloader.getResult('floor')
         )
         this.sonic = new Sonic(this.preloader.getResult('sonic'))
-        this.enemies = new Enemies(this.preloader.getResult('enemy'))
+        //I can't test this ATM
+        //this.enemies = new Enemies(this.preloader.getResult('enemy'))
         this.score = new Score(this.preloader.getResult('score'))
         this.stage.addChild(
             this.scenario,
@@ -36,13 +37,15 @@ export default class Level {
             this.score
         )
 
-        this.music = Sound.play('music')
-        this.currentScore = this.enemies.score
+        //I can't test this ATM
+        //this.music = Sound.play('music')
+        //this.currentScore = this.enemies.score
 
         this.canvas.addEventListener('click', this.jumpOnClick)
-        if (!Ticker.hasEventListener('tick')) {
+        //I can't test this ATM
+        /*if (!Ticker.hasEventListener('tick')) {
             Ticker.addEventListener('tick', this.onTick)
-        }
+        }*/
     }
 
     _isCollidingWithEnemy() {
@@ -61,10 +64,11 @@ export default class Level {
     }
 
     _updateWhenAlive() {
-        if (this._isCollidingWithEnemy()) {
+        //I can't test this ATM
+        /*if (this._isCollidingWithEnemy()) {
             this._killPlayer()
             //socket.emit('send', { hiscore: currentScore, name: playerName})
-        }
+        }*/
     }
 
     _waitForRestart() {
@@ -81,19 +85,20 @@ export default class Level {
     }
 
     _updateScore() {
-        var newScore = this.enemies.score
+        //I can't test this ATM
+        /*var newScore = this.enemies.score
         if (newScore != this.currentScore) {
             this.currentScore = newScore
             Sound.play('ring')
             this.score.update(newScore)
-        }
+        }*/
     }
 
     tick(event) {
-        //updates all entities
-        this.player.tick(event, this.state)
-        this.scenario.tick(this.state)
-        this.enemies.tick(event, this.state)
+        this.sonic.tick(event, this.state)
+        this.scenario.tick(event, this.state)
+        //I can't test this ATM
+        //this.enemies.tick(event, this.state)
 
         if (this.state == STATE_ALIVE) {
             this._updateWhenAlive()

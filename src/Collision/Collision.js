@@ -69,36 +69,37 @@ export default class Collision {
         return pixelIntersection
     }
 
-    _intersectingImagePart(intersetion, bitmap, ctx, i) {
-        var bl, image, frameName, sr
+    _getFrameName(frame) {
+        return [
+            frame.image.src,
+            frame.rect.x,
+            frame.rect.y,
+            frame.rect.width,
+            frame.rect.height,
+        ].join(':')
+    }
 
+    _setImage(bitmap) {
         if (bitmap instanceof Bitmap) {
-            image = bitmap.image
+            return bitmap.image
         } else if (bitmap instanceof Sprite) {
             var frame = bitmap.spriteSheet.getFrame(bitmap.currentFrame)
-            frameName =
-                frame.image.src +
-                ':' +
-                frame.rect.x +
-                ':' +
-                frame.rect.y +
-                ':' +
-                frame.rect.width +
-                ':' +
-                frame.rect.height
+            var frameName = this._getFrameName(frame)
             if (this.cachedBAFrames[frameName]) {
-                image = this.cachedBAFrames[frameName]
+                return this.cachedBAFrames[frameName]
             } else {
-                this.cachedBAFrames[
-                    frameName
-                ] = image = SpriteSheetUtils.extractFrame(
+                frame = SpriteSheetUtils.extractFrame(
                     bitmap.spriteSheet,
                     bitmap.currentFrame
                 )
+                this.cachedBAFrames[frameName] = frame
+                return frame
             }
         }
+    }
 
-        bl = bitmap.globalToLocal(intersetion.x, intersetion.y)
+    _transformContext(ctx, bitmap, intersection, i) {
+        var bl = bitmap.globalToLocal(intersection.x, intersection.y)
         ctx.restore()
         ctx.save()
         ctx.rotate(
@@ -110,67 +111,75 @@ export default class Collision {
             this._getParentalCumulatedProperty(bitmap, 'scaleY', '*')
         )
         ctx.translate(
-            -bl.x - intersetion['rect' + i].regX,
-            -bl.y - intersetion['rect' + i].regY
+            -bl.x - intersection['rect' + i].regX,
+            -bl.y - intersection['rect' + i].regY
         )
-        if ((sr = bitmap.sourceRect) != undefined) {
+    }
+
+    _drawImage(ctx, bitmap, image) {
+        var sourceRect = bitmap.sourceRect
+        if (sourceRect != undefined) {
             ctx.drawImage(
                 image,
-                sr.x,
-                sr.y,
-                sr.width,
-                sr.height,
+                sourceRect.x,
+                sourceRect.y,
+                sourceRect.width,
+                sourceRect.height,
                 0,
                 0,
-                sr.width,
-                sr.height
+                sourceRect.width,
+                sourceRect.height
             )
         } else {
             ctx.drawImage(image, 0, 0, image.width, image.height)
         }
-        return ctx.getImageData(0, 0, intersetion.width, intersetion.height)
+    }
+
+    _intersectingImagePart(intersection, bitmap, ctx, i) {
+        var image = this._setImage(bitmap)
+        this._tranformContext(ctx, bitmap, intersection, i)
+        this._drawImage(ctx, bitmap, image)
+        return ctx.getImageData(0, 0, intersection.width, intersection.height)
             .data
     }
 
+    _getAlpha(imageData, offset) {
+        return imageData.length > offset + 1 ? imageData[offset] / 255 : 0
+    }
+
+    _isAlphaMatch(alpha1, alpha2) {
+        return alpha1 > 0 && alpha2 > 0
+    }
+
+    _checkPixel(imageData1, imageData2, x, y, offset) {
+        var alpha1 = this._getAlpha(imageData1, offset)
+        var alpha2 = this._getAlpha(imageData2, offset)
+        if (this._isAlphaMatch(alpha1, alpha2)) {
+            return { x: x, y: y, width: 1, height: 1 }
+        }
+        return null
+    }
+
     _compareAlphaValues(imageData1, imageData2, width, height) {
-        var alpha1,
-            alpha2,
-            x,
-            y,
-            offset = 3,
-            pixelRect = {
-                x: Infinity,
-                y: Infinity,
-                x2: -Infinity,
-                y2: -Infinity,
-            }
+        var offset = 3
 
         // parsing through the pixels checking for an alpha match
         // TODO: intelligent parsing, not just from 0 to end!
-        for (y = 0; y < height; ++y) {
-            for (x = 0; x < width; ++x) {
-                alpha1 =
-                    imageData1.length > offset + 1
-                        ? imageData1[offset] / 255
-                        : 0
-                alpha2 =
-                    imageData2.length > offset + 1
-                        ? imageData2[offset] / 255
-                        : 0
-
-                if (alpha1 > 0 && alpha2 > 0) {
-                    return { x: x, y: y, width: 1, height: 1 }
+        for (var y = 0; y < height; ++y) {
+            for (var x = 0; x < width; ++x) {
+                var alphaMatch = this._checkPixel(
+                    imageData1,
+                    imageData2,
+                    x,
+                    y,
+                    offset
+                )
+                if (alphaMatch) {
+                    return alphaMatch
                 }
                 offset += 4
             }
         }
-
-        if (pixelRect.x != Infinity) {
-            pixelRect.width = pixelRect.x2 - pixelRect.x + 1
-            pixelRect.height = pixelRect.y2 - pixelRect.y + 1
-            return pixelRect
-        }
-
         return null
     }
 

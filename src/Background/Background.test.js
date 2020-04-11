@@ -1,8 +1,8 @@
-import Scenario from './Scenario'
+import Background from './Background'
 import { STATE_DEAD, STATE_ALIVE } from '../Level/Level.js'
 
 test('shoud initialize floor and clouds when initializing the scenario', () => {
-    const scenario = initializeScenario()
+    const scenario = initializeBackground()
     expect(scenario.floor1.x).toBe(0)
     expect(scenario.floor2.x).toBe(674)
     expect(scenario.clouds1.x).toBe(0)
@@ -10,7 +10,7 @@ test('shoud initialize floor and clouds when initializing the scenario', () => {
 })
 
 test('should update floor and clouds when updating if player is alive', () => {
-    const scenario = initializeScenario()
+    const scenario = initializeBackground()
     scenario.tick(STATE_ALIVE)
     expect(scenario.floor1.x).toBe(-2)
     expect(scenario.floor2.x).toBe(672)
@@ -19,7 +19,7 @@ test('should update floor and clouds when updating if player is alive', () => {
 })
 
 test('should not floor and clouds when updating if player is dead', () => {
-    const scenario = initializeScenario()
+    const scenario = initializeBackground()
     scenario.tick(STATE_DEAD)
     expect(scenario.floor1.x).toBe(0)
     expect(scenario.floor2.x).toBe(674)
@@ -27,6 +27,6 @@ test('should not floor and clouds when updating if player is dead', () => {
     expect(scenario.clouds2.x).toBe(640)
 })
 
-const initializeScenario = () => {
-    return new Scenario('cloudsImage', 'floorImage')
+const initializeBackground = () => {
+    return new Background('cloudsImage', 'floorImage')
 }

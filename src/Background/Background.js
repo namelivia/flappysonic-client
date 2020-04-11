@@ -1,18 +1,17 @@
 import { Container } from 'createjs'
-import Floor from './Floor'
-import Clouds from './Clouds'
+import Layer from './Layer'
 import { STATE_ALIVE } from '../Level/Level'
-export default class Scenario extends Container {
+export default class Background extends Container {
     constructor(cloudsImage, floorImage) {
         super()
         this.setup(cloudsImage, floorImage)
     }
 
     setup(cloudsImage, floorImage) {
-        this.floor1 = new Floor(floorImage, 0)
-        this.floor2 = new Floor(floorImage, 674)
-        this.clouds1 = new Clouds(cloudsImage, 0)
-        this.clouds2 = new Clouds(cloudsImage, 640)
+        this.floor1 = new Layer(floorImage, 0, 192, 2, 674)
+        this.floor2 = new Layer(floorImage, 674, 192, 2, 674)
+        this.clouds1 = new Layer(cloudsImage, 0, 0, 1, 640)
+        this.clouds2 = new Layer(cloudsImage, 640, 0, 1, 640)
 
         this.addChild(this.floor1, this.floor2, this.clouds1, this.clouds2)
     }

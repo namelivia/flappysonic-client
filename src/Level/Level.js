@@ -1,5 +1,5 @@
 import { Stage, Ticker, Sound } from 'createjs'
-import Scenario from '../Scenario/Scenario'
+import Background from '../Background/Background'
 import Sonic from '../Sonic/Sonic'
 import CollisionManager from '../CollisionManager/CollisionManager'
 import Enemies from '../Enemies/Enemies'
@@ -24,7 +24,7 @@ export default class Level {
         this.score = 0
         this.canvas.removeEventListener('click', this.restartOnClick)
         this.stage = new Stage(this.canvas)
-        this.scenario = new Scenario(
+        this.scenario = new Background(
             this.preloader.getResult('clouds'),
             this.preloader.getResult('floor')
         )

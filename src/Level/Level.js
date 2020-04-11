@@ -14,9 +14,11 @@ export default class Level {
     jumpOnClick = () => this.sonic.doJump()
     onTick = (evt) => this.tick(evt)
 
-    constructor(canvas, preloader) {
+    constructor(canvas, preloader, onScore, onDie) {
         this.canvas = canvas
         this.preloader = preloader
+        this.onScore = onScore
+        this.onDie = onDie
     }
 
     start() {
@@ -67,7 +69,7 @@ export default class Level {
         //I can't test this ATM
         if (this._shouldKillPlayer()) {
             this._killPlayer()
-            //socket.emit('send', { hiscore: currentScore, name: playerName})
+            this.onDie(this.score)
         }
     }
 
@@ -89,6 +91,7 @@ export default class Level {
             this.score = this.score + 1
             Sound.play('ring')
             this.scoreCounter.update(this.score)
+            this.onScore()
         }
     }
 

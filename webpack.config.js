@@ -1,52 +1,57 @@
-const path = require('path');
+const path = require('path')
 module.exports = {
-	entry: './src/index.js',
-	output: {
-		path: path.resolve(__dirname, 'dist'),
-		filename: 'bundle.js'
-	},
-	externals: {
-		'createjs' : 'createjs'
-	},
-	module: {
-		rules: [
-			{
-				test: /\.js$/,
-				exclude: /(node_modules)/,
-				use: {
-					loader: 'babel-loader',
-					options: {
-						presets: ['@babel/preset-env']
-					}
-				}
-			}, {
-			    test: /\.js$/,
-				exclude: /(node_modules)/,
-				use: {
-					loader: 'eslint-loader',
-				}
-			}, {
-				test: /\.(png|jpe?g|gif|svg)$/,
-				use: [
-					{
-						loader: "file-loader",
-						options: {
-							outputPath: 'images'
-						}
-					}
-				]
-			}, {
-				test: /\.(woff|woff2|ttf|otf|eot)$/,
-					use: [
-						{
-							loader: "file-loader",
-							options: {
-								outputPath: 'fonts'
-							}
-						}
-					]
-			}
-		]
-	},
-	mode: 'development'
+    entry: './src/index.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'bundle.js',
+        library: 'flappysonic-client',
+        libraryTarget: 'umd',
+    },
+    externals: {
+        createjs: 'createjs',
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /(node_modules)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env'],
+                    },
+                },
+            },
+            {
+                test: /\.js$/,
+                exclude: /(node_modules)/,
+                use: {
+                    loader: 'eslint-loader',
+                },
+            },
+            {
+                test: /\.(png|jpe?g|gif|svg)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            outputPath: 'images',
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.(woff|woff2|ttf|otf|eot)$/,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            outputPath: 'fonts',
+                        },
+                    },
+                ],
+            },
+        ],
+    },
+    mode: 'development',
 }

@@ -4,7 +4,7 @@ import Sonic from '../Sonic/Sonic'
 import CollisionManager from '../CollisionManager/CollisionManager'
 import Enemies from '../Enemies/Enemies'
 import Score from '../Score/Score'
-import Text from '../Text/Text'
+import Text from '../Text'
 
 export const STATE_ALIVE = 0
 export const STATE_DEAD = 1

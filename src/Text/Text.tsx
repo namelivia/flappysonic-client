@@ -1,8 +1,9 @@
-import { Text as CreateJSText } from 'createjs'
+import 'createjs'
 
 export default class Text {
-    constructor(message, stage, canvas) {
-        this.text = new CreateJSText(message, 'bold 24px Helvetica', '#FFFFFF')
+    text: createjs.Text
+    constructor(message: string, stage: createjs.Stage, canvas: HTMLCanvasElement) {
+        this.text = new createjs.Text(message, 'bold 24px Helvetica', '#FFFFFF')
         this.text.maxWidth = 1000
         this.text.textAlign = 'center'
         this.text.x = canvas.width / 2
@@ -10,7 +11,7 @@ export default class Text {
         stage.addChild(this.text)
     }
 
-    update(message) {
+    update(message: string) {
         this.text.text = message
     }
 }

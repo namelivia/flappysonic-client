@@ -7,6 +7,10 @@ module.exports = {
         library: 'flappysonic-client',
         libraryTarget: 'umd',
     },
+    resolve: {
+        // Add '.ts' and '.tsx' as resolvable extensions.
+        extensions: ['.ts', '.tsx', '.js'],
+    },
     // Enable sourcemaps for debugging webpack's output.
     devtool: 'source-map',
     // Define createjs as an external dependency
@@ -37,10 +41,6 @@ module.exports = {
                 },
             },
         ],
-    },
-    resolve: {
-        // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
     },
     mode: 'production',
 }

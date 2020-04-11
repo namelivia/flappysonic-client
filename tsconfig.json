@@ -1,5 +1,13 @@
 {
     "compilerOptions": {
-        "sourceMap": true
-    }
+        "sourceMap": false,
+        "outDir": "./dist/",
+        "target": "es6",
+        "allowJs": true,
+        "esModuleInterop": true,
+        "jsx": "react"
+    },
+    "files": [
+        "./node_modules/@types/easeljs/index.d.ts"
+    ]
 }

@@ -42,13 +42,13 @@ export class Bitmap {
 }
 export class Canvas {
     constructor() {
-        this.width = 640
-        this.height = 480
+        //this.width = 640
+        //this.height = 480
     }
 	removeEventListener = removeEventListenerMock
 	addEventListener = addEventListenerMock
 }
-export class Stage{
+export class Stage {
 	constructor(data) {
 		return mockedStageConstructor(data)
 	}
@@ -62,7 +62,7 @@ export class Text {
 }
 export class LoadQueue {
 	constructor(data) {
-	    this.progress = 20
+	    //this.progress = 20
 		return loadQueueConstructorMock(data)
 	}
 	installPlugin = installPluginMock

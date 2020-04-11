@@ -5,7 +5,6 @@
 </p>
 
 This is the client part of a Flappy Bird Like game featuring Sonic the Hedgehog.
-Yo can play it on: [https://flappysonic.namelivia.com](https://flappysonic.namelivia.com)
 
 ## Requeriments
 

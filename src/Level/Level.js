@@ -1,10 +1,13 @@
-import { Stage, Ticker, Sound } from 'createjs'
-import Background from '../Background/Background'
-import Sonic from '../Sonic/Sonic'
-import CollisionManager from '../CollisionManager/CollisionManager'
-import Enemies from '../Enemies/Enemies'
-import Score from '../Score/Score'
-import Text from '../Text/Text'
+import { Ticker, Sound } from 'createjs'
+import {
+    stage as stageFactory,
+    background as backgroundFactory,
+    sonic as sonicFactory,
+    enemies as enemiesFactory,
+    collisionManager as collisionManagerFactory,
+    score as scoreFactory,
+    text as textFactory,
+} from '../Factory/Factory'
 
 export const STATE_ALIVE = 0
 export const STATE_DEAD = 1
@@ -25,20 +28,23 @@ export default class Level {
         this.state = STATE_ALIVE
         this.score = 0
         this.canvas.removeEventListener('click', this.restartOnClick)
-        this.stage = new Stage(this.canvas)
-        this.scenario = new Background(
+        this.stage = stageFactory(this.canvas)
+        this.scenario = backgroundFactory(
             this.preloader.getResult('clouds'),
             this.preloader.getResult('floor')
         )
-        this.sonic = new Sonic(this.preloader.getResult('sonic'))
+        this.sonic = sonicFactory(this.preloader.getResult('sonic'))
         this.stage.addChild(this.scenario)
         //I can't test this ATM
-        this.enemies = new Enemies(
+        this.enemies = enemiesFactory(
             this.stage,
             this.preloader.getResult('enemy')
         )
-        this.collisionManager = new CollisionManager(this.sonic, this.enemies)
-        this.scoreCounter = new Score(this.preloader.getResult('score'))
+        this.collisionManager = collisionManagerFactory(
+            this.sonic,
+            this.enemies
+        )
+        this.scoreCounter = scoreFactory(this.preloader.getResult('score'))
         this.stage.addChild(this.sonic, this.scoreCounter)
 
         this.music = Sound.play('music')
@@ -74,7 +80,7 @@ export default class Level {
     }
 
     _waitForRestart() {
-        new Text('Click to restart', this.stage, this.canvas)
+        textFactory('Click to restart', this.stage, this.canvas)
         this.canvas.removeEventListener('click', this.jumpOnClick)
         this.canvas.addEventListener('click', this.restartOnClick)
     }

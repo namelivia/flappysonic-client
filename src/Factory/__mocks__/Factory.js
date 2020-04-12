@@ -9,3 +9,9 @@ export const level = (canvas, preloader, onScore, onDie) => ({
 })
 export const loadingText = (stage, canvas) => 'loadingText'
 export const stage = (canvas) => ({})
+export const background = (cloudsImage, floorImage) => ({})
+export const sonic = (sonicImage) => ({})
+export const enemies = (stage, enemiesImage) => ({})
+export const collisionManager = (sonic, enemies) => ({})
+export const score = (scoreImage) => ({})
+export const text = (message, stage, canvas) => ({})

@@ -6,8 +6,5 @@
         "allowJs": true,
         "esModuleInterop": true,
         "jsx": "react"
-    },
-    "files": [
-        "./node_modules/@types/easeljs/index.d.ts"
-    ]
+    }
 }

@@ -1,5 +1,4 @@
 import Text from './Text'
-import 'createjs'
 
 test('should display text correctly in the middle of the screen', () => {
     const text = initializeText()
@@ -20,7 +19,7 @@ test('should update message', () => {
 })
 
 const initializeText = () => {
-    const stage = new createjs.Stage('data')
     const canvas = new HTMLCanvasElement()
+    const stage = new createjs.Stage(canvas)
     return new Text('message', stage, canvas)
 }

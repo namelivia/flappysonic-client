@@ -1,13 +1,21 @@
 import Game from './Game'
 jest.mock('../Factory/Factory')
+import {
+    stage as stageFactory,
+    preloader as preloaderFactory,
+} from '../Factory/Factory'
 
 test('should create stage when initalizing', () => {
-    initalizeGame()
+    const canvas = document.createElement('canvas')
+    initalizeGame(canvas)
+    expect(stageFactory).toHaveBeenCalledTimes(1)
+    expect(stageFactory).toHaveBeenCalledWith(canvas)
 })
 
 test('should start loading when init', () => {
     const game = initalizeGame()
     game.init()
+    expect(preloaderFactory).toHaveBeenCalledTimes(1)
 })
 
 test('should display instructions when loaded', () => {
@@ -30,9 +38,15 @@ test('should create e new level when starting', () => {
     game.restart()
 })
 
-const initalizeGame = () => {
-    const canvas = document.createElement('canvas')
-    const onScore = jest.fn()
-    const onDie = jest.fn()
+const initalizeGame = (canvas, onScore, onDie) => {
+    if (canvas === undefined) {
+        canvas = document.createElement('canvas')
+    }
+    if (onScore === undefined) {
+        onScore = () => {}
+    }
+    if (onDie === undefined) {
+        onDie = () => {}
+    }
     return new Game(canvas, onScore, onDie)
 }

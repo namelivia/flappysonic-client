@@ -1,4 +1,4 @@
-import Enemy from '../Enemy/Enemy'
+import { enemy as enemyFactory } from '../Factory/Factory'
 import { STATE_ALIVE } from '../Level/Level'
 
 export default class Enemies {
@@ -6,7 +6,7 @@ export default class Enemies {
     enemies = []
     constructor(stage, spritesheet) {
         for (var index = 0; index < this.NUM_ENEMIES; index++) {
-            this.enemies[index] = new Enemy(stage, spritesheet)
+            this.enemies[index] = enemyFactory(stage, spritesheet)
         }
         this.rearrange()
     }

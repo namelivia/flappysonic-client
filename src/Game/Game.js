@@ -1,13 +1,15 @@
-import { Stage } from 'createjs'
-import Preloader from '../Preloader/Preloader'
-import LoadingText from '../LoadingText/LoadingText'
-import Instructions from '../Instructions/Instructions'
-import Level from '../Level/Level'
+import {
+    stage as stageFactory,
+    preloader as preloaderFactory,
+    level as levelFactory,
+    loadingText as loadingTextFactory,
+    instructions as instructionsFactory,
+} from '../Factory/Factory'
 
 export default class Game {
     constructor(canvas, onScore, onDie) {
         this.canvas = canvas
-        this.stage = new Stage(this.canvas)
+        this.stage = stageFactory(this.canvas)
         if (this.onScore) {
             this.onScore = onScore
         }
@@ -20,7 +22,7 @@ export default class Game {
 
     restart() {
         this.canvas.removeEventListener('click', this.onCanvasClick)
-        var level = new Level(
+        var level = levelFactory(
             this.canvas,
             this.preloader,
             this.onScore,
@@ -35,22 +37,18 @@ export default class Game {
     }
 
     onLoading() {
-        let loadingText = new LoadingText(this.stage, this.canvas)
+        let loadingText = loadingTextFactory(this.stage, this.canvas)
         loadingText.update(this.preloader.getProgress())
         this.stage.update()
     }
 
     onLoaded() {
-        new Instructions(this.stage, this.preloader)
+        instructionsFactory(this.stage, this.preloader)
         this.canvas.addEventListener('click', this.onCanvasClick)
     }
 
-    startLoading() {
-        this.preloader = new Preloader(this.onLoading, this.onLoaded)
-        this.preloader.load()
-    }
-
     init() {
-        this.startLoading()
+        this.preloader = preloaderFactory(this.onLoading, this.onLoaded)
+        this.preloader.load()
     }
 }

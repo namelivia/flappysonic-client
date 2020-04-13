@@ -32,7 +32,6 @@ test('should start loading when init', () => {
     const game = initalizeGame()
     game.init()
     expect(preloaderFactory).toHaveBeenCalledTimes(1)
-    expect(preloaderFactory).toHaveBeenCalledWith(game.onLoading, game.onLoaded)
     expect(loadMock).toHaveBeenCalledTimes(1)
     expect(loadMock).toHaveBeenCalledWith()
 })

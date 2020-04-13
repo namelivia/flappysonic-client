@@ -12,8 +12,6 @@ test('should install sound and set callbacks on initialization', () => {
     initializePreloader(onLoadingMock, onLoadedMock)
     expect(installPluginMock).toHaveBeenCalledTimes(1)
     expect(addEventListenerMock).toHaveBeenCalledTimes(2)
-    expect(addEventListenerMock).toHaveBeenCalledWith('complete', onLoadedMock)
-    expect(addEventListenerMock).toHaveBeenCalledWith('progress', onLoadingMock)
 })
 
 test('should load manifest', () => {

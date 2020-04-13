@@ -1,7 +1,7 @@
-import Collision from '../Collision/Collision'
+import { collision as collisionFactory } from '../Factory/Factory'
 export default class CollisionManager {
     constructor(sonic, enemies) {
-        this.collisionManager = new Collision()
+        this.collisionManager = collisionFactory()
         this.sonic = sonic
         this.enemies = enemies
     }

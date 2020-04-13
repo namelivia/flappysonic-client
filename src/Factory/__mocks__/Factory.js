@@ -9,6 +9,7 @@ export const addChildMock = jest.fn()
 export const startLevelMock = jest.fn()
 export const getResultMock = jest.fn()
 export const areSurpassedMock = jest.fn()
+export const areCollidingMock = jest.fn()
 export const tickMock = jest.fn()
 export const preloader = jest.fn().mockImplementation(() => {
     return {
@@ -51,12 +52,17 @@ export const enemies = jest.fn().mockImplementation(() => {
     return {
         tick: tickMock,
         areSurpassed: areSurpassedMock,
+        areColliding: areCollidingMock,
     }
 })
 export const collisionManager = jest.fn().mockImplementation(() => {
     return {
         thereIsACollision: thereIsACollisionMock,
     }
+})
+export const collisionMock = {}
+export const collision = jest.fn().mockImplementation(() => {
+    return collisionMock
 })
 export const score = (scoreImage) => ({})
 export const text = (message, stage, canvas) => ({})

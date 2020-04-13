@@ -9,6 +9,7 @@ import Enemies from '../Enemies/Enemies'
 import Score from '../Score/Score'
 import Text from '../Text/Text'
 import CollisionManager from '../CollisionManager/CollisionManager'
+import Collision from '../Collision/Collision'
 import Enemy from '../Enemy/Enemy'
 
 export const preloader = (onLoading, onLoaded) =>
@@ -39,3 +40,5 @@ export const score = (scoreImage) => new Score(scoreImage)
 export const text = (message, stage, canvas) => new Text(message, stage, canvas)
 
 export const enemy = (stage, spreadsheet) => new Enemy(stage, spreadsheet)
+
+export const collision = () => new Collision()

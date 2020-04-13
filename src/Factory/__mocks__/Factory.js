@@ -72,7 +72,10 @@ export const collisionManager = jest.fn().mockImplementation(() => {
         thereIsACollision: thereIsACollisionMock,
     }
 })
-export const collisionMock = {}
+export const checkPixelCollisionMock = jest.fn()
+export const collisionMock = {
+    checkPixelCollision: checkPixelCollisionMock,
+}
 export const collision = jest.fn().mockImplementation(() => {
     return collisionMock
 })

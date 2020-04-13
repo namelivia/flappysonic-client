@@ -3,11 +3,14 @@ import { Stage } from 'createjs'
 import { STATE_ALIVE, STATE_DEAD } from '../Level/Level'
 jest.mock('../Factory/Factory')
 import {
+    collision as collisionFactory,
+    sonic as sonicFactory,
     enemy as enemyFactory,
     hasReachedEndMock,
     hasReachedSonicMock,
     rearrangeMock,
     enemyTickMock,
+    checkPixelCollisionMock,
 } from '../Factory/Factory'
 
 beforeEach(() => {
@@ -62,6 +65,21 @@ test('should get if enemies are surpassed', () => {
     result = enemies.areSurpassed()
     expect(hasReachedSonicMock).toHaveBeenCalledTimes(2)
     expect(result).toBe(true)
+})
+
+test('should check for collision for every enemy', () => {
+    const collision = collisionFactory()
+    const sonic = sonicFactory()
+    const enemies = initializeEnemies()
+    checkPixelCollisionMock.mockReturnValueOnce(true)
+    var result = enemies.areColliding(collision, sonic)
+    expect(result).toBe(true)
+    expect(checkPixelCollisionMock).toHaveBeenCalledTimes(1)
+
+    checkPixelCollisionMock.mockReturnValue(false)
+    result = enemies.areColliding(collision, sonic)
+    expect(result).toBe(false)
+    expect(checkPixelCollisionMock).toHaveBeenCalledTimes(1 + NUM_ENEMIES)
 })
 
 const initializeEnemies = () => {

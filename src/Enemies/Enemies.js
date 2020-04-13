@@ -1,23 +1,24 @@
 import { enemy as enemyFactory } from '../Factory/Factory'
 import { STATE_ALIVE } from '../Level/Level'
 
+export const NUM_ENEMIES = 4
+
 export default class Enemies {
-    NUM_ENEMIES = 4
     enemies = []
     constructor(stage, spritesheet) {
-        for (var index = 0; index < this.NUM_ENEMIES; index++) {
+        for (var index = 0; index < NUM_ENEMIES; index++) {
             this.enemies[index] = enemyFactory(stage, spritesheet)
         }
         this.rearrange()
     }
 
     _getNewHole() {
-        return Math.floor(Math.random() * (this.NUM_ENEMIES + 1) - 1)
+        return Math.floor(Math.random() * (NUM_ENEMIES + 1) - 1)
     }
 
     rearrange() {
         var hole = this._getNewHole()
-        for (var index = 0; index < this.NUM_ENEMIES; index++) {
+        for (var index = 0; index < NUM_ENEMIES; index++) {
             this.enemies[index].rearrange(index, hole)
         }
     }
@@ -27,7 +28,7 @@ export default class Enemies {
             if (this.enemies[0].hasReachedEnd()) {
                 this.rearrange()
             }
-            for (var index = 0; index < this.NUM_ENEMIES; index++) {
+            for (var index = 0; index < NUM_ENEMIES; index++) {
                 this.enemies[index].tick()
             }
         }

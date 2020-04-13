@@ -11,6 +11,10 @@ export const getResultMock = jest.fn()
 export const areSurpassedMock = jest.fn()
 export const areCollidingMock = jest.fn()
 export const tickMock = jest.fn()
+export const rearrangeMock = jest.fn()
+export const hasReachedSonicMock = jest.fn()
+export const hasReachedEndMock = jest.fn()
+export const enemyTickMock = jest.fn()
 export const preloader = jest.fn().mockImplementation(() => {
     return {
         load: loadMock,
@@ -46,6 +50,14 @@ export const sonic = jest.fn().mockImplementation(() => {
     return {
         tick: tickMock,
         isOutOfBounds: isOutOfBoundsMock,
+    }
+})
+export const enemy = jest.fn().mockImplementation(() => {
+    return {
+        rearrange: rearrangeMock,
+        hasReachedSonic: hasReachedSonicMock,
+        hasReachedEnd: hasReachedEndMock,
+        tick: enemyTickMock,
     }
 })
 export const enemies = jest.fn().mockImplementation(() => {

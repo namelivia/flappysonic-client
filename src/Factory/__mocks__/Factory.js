@@ -15,6 +15,7 @@ export const rearrangeMock = jest.fn()
 export const hasReachedSonicMock = jest.fn()
 export const hasReachedEndMock = jest.fn()
 export const enemyTickMock = jest.fn()
+export const dieMock = jest.fn()
 export const preloader = jest.fn().mockImplementation(() => {
     return {
         load: loadMock,
@@ -49,6 +50,7 @@ export const background = jest.fn().mockImplementation(() => {
 export const sonic = jest.fn().mockImplementation(() => {
     return {
         tick: tickMock,
+        die: dieMock,
         isOutOfBounds: isOutOfBoundsMock,
     }
 })

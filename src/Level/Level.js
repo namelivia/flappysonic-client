@@ -35,7 +35,6 @@ export default class Level {
         )
         this.sonic = sonicFactory(this.preloader.getResult('sonic'))
         this.stage.addChild(this.scenario)
-        //I can't test this ATM
         this.enemies = enemiesFactory(
             this.stage,
             this.preloader.getResult('enemy')
@@ -72,7 +71,6 @@ export default class Level {
     }
 
     _updateWhenAlive() {
-        //I can't test this ATM
         if (this._shouldKillPlayer()) {
             this._killPlayer()
             this.onDie(this.score)
@@ -104,7 +102,6 @@ export default class Level {
     tick(event) {
         this.sonic.tick(this.state)
         this.scenario.tick(this.tate)
-        //I can't test this ATM
         this.enemies.tick(this.state)
 
         if (this.state == STATE_ALIVE) {

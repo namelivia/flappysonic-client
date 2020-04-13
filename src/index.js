@@ -1,2 +1,5 @@
 import Game from './Game/Game'
-Game.init()
+export const start = (canvas, onScore, onDie) => {
+    const game = new Game(canvas, onScore, onDie)
+    game.init()
+}

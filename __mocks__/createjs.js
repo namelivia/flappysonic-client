@@ -17,6 +17,7 @@ export const mockedTextConstructor = jest.fn()
 export const addChildMock = jest.fn()
 export const updateMock = jest.fn()
 export const stopMock = jest.fn()
+export const getFrameMock = jest.fn()
 export const musicMock = jest.fn().mockImplementation(() => {
     return {
         stop: stopMock,
@@ -37,6 +38,10 @@ export class Sprite {
     }
     currentAnimation = 'currentAnimation'
     gotoAndPlay = gotoAndPlayMock
+    spriteSheet = {
+        _frames: [{ image: 'image' }],
+        getFrame: getFrameMock,
+    }
 }
 export class SpriteSheet {
     constructor(data) {

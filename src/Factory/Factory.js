@@ -8,6 +8,7 @@ import Sonic from '../Sonic/Sonic'
 import Enemies from '../Enemies/Enemies'
 import Score from '../Score/Score'
 import Text from '../Text/Text'
+import GlobalPositions from '../Collision/GlobalPositions'
 import CollisionManager from '../CollisionManager/CollisionManager'
 import Collision from '../Collision/Collision'
 import Enemy from '../Enemy/Enemy'
@@ -42,3 +43,7 @@ export const text = (message, stage, canvas) => new Text(message, stage, canvas)
 export const enemy = (stage, spreadsheet) => new Enemy(stage, spreadsheet)
 
 export const collision = () => new Collision()
+
+export const canvas = () => document.createElement('canvas')
+
+export const globalPositions = (obj, imgr) => new GlobalPositions(obj, imgr)

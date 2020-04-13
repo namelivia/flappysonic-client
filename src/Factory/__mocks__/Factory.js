@@ -81,5 +81,40 @@ export const collisionMock = {
 export const collision = jest.fn().mockImplementation(() => {
     return collisionMock
 })
-export const score = (scoreImage) => ({})
-export const text = (message, stage, canvas) => ({})
+
+export const saveContextMock = jest.fn()
+export const restoreContextMock = jest.fn()
+export const rotateContextMock = jest.fn()
+export const scaleContextMock = jest.fn()
+export const translateContextMock = jest.fn()
+export const drawImageMock = jest.fn()
+export const getImageDataMock = jest.fn().mockImplementation(() => {
+    return {
+        data: {},
+    }
+})
+export const getContextMock = jest.fn().mockImplementation(() => {
+    return {
+        save: saveContextMock,
+        restore: restoreContextMock,
+        rotate: rotateContextMock,
+        scale: scaleContextMock,
+        translate: translateContextMock,
+        drawImage: drawImageMock,
+        getImageData: getImageDataMock,
+    }
+})
+export const canvasMock = {
+    getContext: getContextMock,
+}
+export const canvas = jest.fn().mockImplementation(() => {
+    return canvasMock
+})
+export const globalPositions = jest.fn().mockImplementation(() => {
+    return {
+        minX: 10,
+        minY: 20,
+        maxX: 30,
+        maxY: 40,
+    }
+})

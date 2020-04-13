@@ -48,9 +48,27 @@ export class SpriteSheet {
         return spriteSheetConstructorMock(data)
     }
 }
+const localToGlobalMock = jest.fn().mockImplementation(() => {
+    return {
+        x: 10,
+        y: 30,
+    }
+})
+const globalToLocalMock = jest.fn().mockImplementation(() => {
+    return {
+        x: 50,
+        y: 80,
+    }
+})
 export class Bitmap {
     constructor(data) {
         return mockedBitmapConstructor(data)
+    }
+    globalToLocal = globalToLocalMock
+    localToGlobal = localToGlobalMock
+    image = {
+        width: 20,
+        height: 50,
     }
 }
 export class Canvas {

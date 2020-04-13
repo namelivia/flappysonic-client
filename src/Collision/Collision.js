@@ -1,14 +1,16 @@
 import { Bitmap, Sprite, SpriteSheetUtils } from 'createjs'
 import Bounds from './Bounds'
-import GlobalPositions from './GlobalPositions'
+import { globalPositions as globalPositionsFactory } from '../Factory/Factory'
 import Imgr from './Imgr'
+import { canvas as canvasFactory } from '../Factory/Factory'
+
 export default class Collision {
     constructor() {
-        this.collisionCanvas = document.createElement('canvas')
+        this.collisionCanvas = canvasFactory()
         this.collisionCtx = this.collisionCanvas.getContext('2d')
         this.collisionCtx.save()
 
-        this.collisionCanvas2 = document.createElement('canvas')
+        this.collisionCanvas2 = canvasFactory()
         this.collisionCtx2 = this.collisionCanvas2.getContext('2d')
         this.collisionCtx2.save()
 
@@ -137,7 +139,7 @@ export default class Collision {
 
     _intersectingImagePart(intersection, bitmap, ctx, i) {
         var image = this._setImage(bitmap)
-        this._tranformContext(ctx, bitmap, intersection, i)
+        this._transformContext(ctx, bitmap, intersection, i)
         this._drawImage(ctx, bitmap, image)
         return ctx.getImageData(0, 0, intersection.width, intersection.height)
             .data
@@ -250,7 +252,7 @@ export default class Collision {
         bounds.regX = imgr.regX
         bounds.regY = imgr.regY
 
-        var globalPositions = new GlobalPositions(obj, imgr)
+        var globalPositions = globalPositionsFactory(obj, imgr)
         bounds.x = globalPositions.minX
         bounds.y = globalPositions.minY
         bounds.width = globalPositions.maxX - bounds.x

@@ -118,3 +118,5 @@ export const globalPositions = jest.fn().mockImplementation(() => {
         maxY: 40,
     }
 })
+export const score = (scoreImage) => ({})
+export const text = (message, stage, canvas) => ({})

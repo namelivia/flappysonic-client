@@ -20,6 +20,11 @@ export default class Game {
 
     onCanvasClick = () => this.restart()
 
+    restartOnClick() {
+        this.canvas.removeEventListener('click', () => this.restartOnClick())
+        this.restart()
+    }
+
     restart() {
         this.canvas.removeEventListener('click', this.onCanvasClick)
         var level = levelFactory(
@@ -29,11 +34,6 @@ export default class Game {
             this.onDie
         )
         level.start()
-    }
-
-    restartOnClick() {
-        this.canvas.removeEventListener('click', () => this.restartOnClick())
-        this.restart()
     }
 
     onLoading() {

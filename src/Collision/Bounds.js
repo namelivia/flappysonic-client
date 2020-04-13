@@ -21,28 +21,4 @@ export default class Bounds {
         this.x2 = this._replaceInfinityWithZero(this.x2)
         this.y2 = this._replaceInfinityWithZero(this.y2)
     }
-
-    setX(x) {
-        this.x = x
-    }
-
-    setRegX(regX) {
-        this.regX = regX
-    }
-
-    setRegY(regY) {
-        this.regY = regY
-    }
-
-    setX2(x2) {
-        this.x2 = x2
-    }
-
-    setY(y) {
-        this.y = y
-    }
-
-    setY2(y2) {
-        this.y2 = y2
-    }
 }

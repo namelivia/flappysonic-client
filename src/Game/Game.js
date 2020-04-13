@@ -10,10 +10,10 @@ export default class Game {
     constructor(canvas, onScore, onDie) {
         this.canvas = canvas
         this.stage = stageFactory(this.canvas)
-        if (this.onScore) {
+        if (onScore) {
             this.onScore = onScore
         }
-        if (this.onDie) {
+        if (onDie) {
             this.onDie = onDie
         }
     }

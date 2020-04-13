@@ -18,8 +18,8 @@ export default class Preloader {
         this.queue = new LoadQueue()
         Sound.alternateExtensions = ['mp3']
         this.queue.installPlugin(Sound)
-        this.queue.addEventListener('complete', onLoaded)
-        this.queue.addEventListener('progress', onLoading)
+        this.queue.addEventListener('complete', () => onLoaded())
+        this.queue.addEventListener('progress', () => onLoading())
     }
 
     load() {

@@ -48,7 +48,10 @@ export default class Game {
     }
 
     init() {
-        this.preloader = preloaderFactory(this.onLoading, this.onLoaded)
+        this.preloader = preloaderFactory(
+            () => this.onLoading(),
+            () => this.onLoaded()
+        )
         this.preloader.load()
     }
 }

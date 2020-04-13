@@ -1,6 +1,6 @@
 {
   "name": "flappysonic-client",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Client part of a flappy bird like game featuring Sonic the Hedgehog",
   "main": "dist/bundle.js",
   "files": [
